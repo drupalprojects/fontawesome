@@ -1,1 +1,9 @@
 name = Font Awesome
+description = Iconic font designed for use with Twitter Bootstrap.
+core = 7.x
+php = 5
+
+dependencies[] = libraries (>=7.x-2.0)
+
+files[] = fontawesome.install
+files[] = fontawesome.module

@@ -1,0 +1,52 @@
+<?php
+
+/**
+ * @file
+ * Drupal integration with Font Awesome, the iconic font for use with Bootstrap.
+ */
+
+/**
+ * Implements hook_help().
+ */
+function fontawesome_help($path, $arg) {
+  switch ($path) {
+  case 'admin/help#fontawesome':
+    return '<p><i class="icon-flag icon-large"></i>' . t('<a href="@fontawesome">Font Awesome</a> is an iconic font designed for use with <a href="@bootstrap">Twitter Bootstrap</a>.', array(
+      '@fontawesome' => 'http://fortawesome.github.com/Font-Awesome/',
+      '@bootstrap' => 'http://twitter.github.com/bootstrap',
+    )) . '</p>';
+  }
+}
+
+/**
+ * Implements hook_init().
+ */
+function fontawesome_init() {
+  // Load up the Font Awesome CSS file.
+  drupal_load('module', 'libraries');
+  libraries_load('fontawesome');
+}
+
+/**
+ * Implements hook_libraries_info().
+ */
+function fontawesome_libraries_info() {
+  $libraries['fontawesome'] = array(
+    'name' => 'Font Awesome',
+    'vendor url' => 'http://fortawesome.github.com/Font-Awesome/',
+    'download url' => 'https://github.com/FortAwesome/Font-Awesome/zipball/master',
+    'version arguments' => array(
+      'file' => 'README.md',
+      'pattern' => '/((?:\d+\.?){2,3})$/',
+      'lines' => 10,
+      'cols' => 30,
+    ),
+    'files' => array(
+      'css' => array(
+        'css/font-awesome.css',
+      ),
+    ),
+  );
+
+  return $libraries;
+}
