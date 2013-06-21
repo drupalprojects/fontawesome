@@ -37,7 +37,7 @@ function fontawesome_libraries_info() {
     'download url' => 'https://github.com/FortAwesome/Font-Awesome/zipball/master',
     'version arguments' => array(
       'file' => 'README.md',
-      'pattern' => '/((?:\d+\.?){2,3})$/',
+      'pattern' => '/((?:\d+\.?){2,3})/',
       'lines' => 10,
       'cols' => 30,
     ),
