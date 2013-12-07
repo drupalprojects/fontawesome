@@ -50,3 +50,19 @@ function fontawesome_libraries_info() {
 
   return $libraries;
 }
+
+
+/**
+ * Implements hook_icon_providers().
+ */
+function fontawesome_icon_providers() {
+  $providers['fontawesome'] = array(
+    'title' => t('fontawesome'),
+    'url' => 'http://fontawesome.io',
+    'default bundle' => array(
+      'render' => 'html_tag',
+      'settings' => fontawesome_default_settings(),
+    ),
+  );
+  return $providers;
+}
