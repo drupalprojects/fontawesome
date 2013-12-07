@@ -66,3 +66,64 @@ function fontawesome_icon_providers() {
   );
   return $providers;
 }
+
+
+/**
+ * Provide default bundle settings.
+ */
+function fontawesome_default_settings() {
+  return array(
+    'tag' => 'i',
+  );
+}
+
+/**
+ * Implements hook_icon_bundle_configure().
+ */
+function fontawesome_icon_bundle_configure(&$settings, &$form_state, &$complete_form) {
+  $bundle = $form_state['bundle'];
+  if ($bundle['provider'] === 'fontawesome') {
+    $settings['tag'] = array(
+      '#type' => 'select',
+      '#title' => t('HTML Markup'),
+      '#description' => t('Choose the HTML markup tag that Font Awesome icons should be created with.
+        Typically, this is an %i tag, however it can be changed to suite the theme requirements.', array('%i' => '<i/>')),
+      '#options' => drupal_map_assoc(array('i', 'span', 'div')),
+      '#default_value' => $bundle['settings']['tag'],
+    );
+  }
+}
+
+/**
+ * Define render hook information.
+ *
+ * @see hook_icon_render_hooks()
+ */
+function fontawesome_icon_render_hooks() {
+  $hooks['html_tag'] = array();
+  return $hooks;
+}
+
+/**
+ * Implements hook_preprocess_icon().
+ */
+function fontawesome_preprocess_icon(&$variables) {
+  if (!empty($variables['bundle']['provider']) && $variables['bundle']['provider'] === 'fontawesome') {
+    $variables['attributes']['class'][] = 'fa';
+  }
+}
+
+
+/**
+ * @desc Implements hook_preprocess_icon_RENDER_HOOK().
+ */
+function fontawesome_preprocess_icon_html_tag(&$variables) {
+  $bundle = &$variables['bundle'];
+  $icon = &$variables['icon'];
+  // Sanitize and add icon class here.
+  $class = drupal_html_class($icon);
+  if (is_numeric($class[0])) {
+    $class = 'fa fa-' . $class;
+  }
+  $variables['attributes']['class'][] = $class;
+}
