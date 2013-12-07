@@ -127,3 +127,19 @@ function fontawesome_preprocess_icon_html_tag(&$variables) {
   }
   $variables['attributes']['class'][] = $class;
 }
+
+/**
+ * @desc Implements hook_icon_bundles().
+ */
+function fontawesome_icon_bundles() {
+  $bundles['fontawesome'] = array(
+    'render' => 'html_tag',
+    'provider' => 'fontawesome',
+    'title' => t('FontAwsome: Icons'),
+    'icons' => array(
+      'fa-spinner' => 'fa-spinner',
+      'fa-stack' => 'fa-stack',
+    ),
+  );
+  return $bundles;
+}
