@@ -127,7 +127,6 @@ function fontawesome_preprocess_icon_html_tag(&$variables) {
   }
   $variables['attributes']['class'][] = $class;
 }
-
 /**
  * @desc Implements hook_icon_bundles().
  */
@@ -142,4 +141,23 @@ function fontawesome_icon_bundles() {
     ),
   );
   return $bundles;
+}
+
+/**
+ * @desc return HTML tag emement with fontawesome icon classed
+ * @param <type> $variables
+ * @return <type>
+ */
+function theme_icon_html_tag($variables) {
+  $output = '';
+  $bundle = $variables['bundle'];
+  $icon = $variables['icon'];
+  $output = theme('html_tag', array(
+    'element' => array(
+      '#tag' => $bundle['settings']['tag'],
+      '#attributes' => $variables['attributes'],
+      '#value' => '',
+    ),
+  ));
+  return $output;
 }
