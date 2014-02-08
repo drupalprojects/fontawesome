@@ -16,8 +16,12 @@ http://fortawesome.github.com/Font-Awesome/
 "Font Awesome" icon fonts could be used as:-
 
 1) Within HTML (node/block/view/panel):-
+Inside HTML you can place Font Awesome icons just about anywhere with the <i> tag.
 
-Read more about using it within HTML at:- http://fortawesome.github.io/Font-Awesome/examples/
+E.g:- "Font Awesome 4.0.3" you can use like :-
+<i class="fa fa-info-circle"></i> Example for Info Icon
+
+See more examples of using "Font Awesome" within HTML at:- http://fortawesome.github.io/Font-Awesome/examples/
 
 2) With "Icon API" module
 This module adds support for "Icon API" (https://drupal.org/project/icon)
