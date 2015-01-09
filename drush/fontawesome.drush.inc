@@ -78,14 +78,14 @@ function fontawesome_drush_lib_download() {
   }
   // Create the path if it does not exist yet. Added substr check for preventing 
   // any wrong attempts or hacks !
-  if(substr($path, -11) == 'fontawesome' && !is_dir($path)){
+  if (substr($path, -11) == 'fontawesome' && !is_dir($path)) {
     drush_mkdir($path);
   }
   if (is_dir($path . '/css')) {
-    drush_log(dt('Fontawesome already present at @path. No download required.',array('@path' => $path)), 'ok');
+    drush_log(dt('Fontawesome already present at @path. No download required.', array('@path' => $path)), 'ok');
   }
   elseif (drush_op('chdir', $path) &&
-      drush_shell_exec('wget ' .FONTAWESOME_DOWNLOAD_URL. '  -O fontawesome.zip') &&
+      drush_shell_exec('wget ' . FONTAWESOME_DOWNLOAD_URL . '  -O fontawesome.zip') &&
       drush_shell_exec('unzip fontawesome.zip') &&
       drush_shell_exec('mv Font-Awesome-*/* .') &&
       drush_shell_exec('rm -rf Font-Awesome-*')) {
