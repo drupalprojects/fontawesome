@@ -55,8 +55,8 @@ INSTALLATION
          (http://fontawesome.io) and place inside 
          "sites/all/libraries/fontawesome" directory. The CSS file should
          be sites/all/libraries/fontawesome/css/font-awesome.css
-         Direct link for downloading version 4.2.0 is: 
-         http://fortawesome.github.io/Font-Awesome/assets/font-awesome-4.2.0.zip
+         Direct link for downloading version 3.2.1 is: 
+         https://github.com/FortAwesome/Font-Awesome/archive/master.zip
     b. Enable the module at Administer >> Site building >> Modules.
 
 CREDITS

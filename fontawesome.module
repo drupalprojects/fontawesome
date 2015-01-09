@@ -8,8 +8,8 @@
 define('FONTAWESOME_LIBRARY', 'fontawesome');
 define('FONTAWESOME_NAME', 'Font Awesome');
 define('FONTAWESOME_URL', 'http://fontawesome.io');
-define('FONTAWESOME_DOWNLOAD_URL', 'https://github.com/FortAwesome/Font-Awesome/archive/v4.2.0.zip');
-define('FONTAWESOME_PREFIX', 'fa');
+define('FONTAWESOME_DOWNLOAD_URL', 'https://github.com/FortAwesome/Font-Awesome/archive/master.zip');
+define('FONTAWESOME_PREFIX', 'icon');
 
 /**
  * Implements hook_help().
@@ -95,13 +95,6 @@ function fontawesome_icon_bundle_configure(&$settings, &$form_state, &$complete_
 function fontawesome_preprocess_icon_sprite(&$variables) {
   $bundle = &$variables['bundle'];
   if ($bundle['provider'] === FONTAWESOME_LIBRARY) {
-    // Remove the default "icon" class.
-    $key = array_search('icon', $variables['attributes']['class']);
-    if ($key !== FALSE) {
-      unset($variables['attributes']['class'][$key]);
-    }
-
-    // Add the necessary FA identifier class.
     $variables['attributes']['class'][] = FONTAWESOME_PREFIX;
 
     // Prepend the icon with the FA prefix (which will be used as the class).
