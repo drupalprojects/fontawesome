@@ -42,20 +42,20 @@ INSTALLATION
 
     $ drush cc drush
 
-    And then installing the Font Awesome library:
-
-    $ drush fa-library
+    No need to run separate  command for installing library.
 
 2. Manually
 
     a. Download & extract "Font Awesome" (http://fontawesome.io) and place
        inside "sites/all/libraries/fontawesome" directory. The CSS file should
        be sites/all/libraries/fontawesome/css/font-awesome.css
+       Direct link for downloading version 4.2.0 is: 
+       http://fortawesome.github.io/Font-Awesome/assets/font-awesome-4.2.0.zip
     b. Enable the module at Administer >> Site building >> Modules.
 
 CREDITS
 -------
 * Rob Loach (RobLoach) http://robloach.net
-* Inder Singh (inders) http://indersingh.com
+* Inder Singh (inders) http://indersingh.com | https://www.drupal.org/u/inders
 * Mark Carver https://www.drupal.org/u/mark-carver
 * Brian Gilbert https://drupal.org/u/realityloop
