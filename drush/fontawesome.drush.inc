@@ -71,28 +71,24 @@ function fontawesome_drush_lib_download() {
     $path = $args[0];
   }
   else {
-    $path = drush_get_context('DRUSH_DRUPAL_ROOT');
-    if (module_exists('libraries')) {
-      $path .= '/' . libraries_get_path('fontawesome');
-    }
-    else {
-      $path .= '/' . drupal_get_path('module', 'fontawesome') . '/libraries';
-    }
+    //we have dependencies on libraries module so no need to check for that
+    //TODO: any way to get path for libraries directory?
+    //Just in case if it is site specific? e.g. sites/domain.com/libraries ?
+    $path = drush_get_context('DRUSH_DRUPAL_ROOT') . '/sites/all/libraries/fontawesome';
   }
-
-  // Create the path if it does not exist yet.
-  if (!is_dir($path)) {
+  // Create the path if it does not exist yet. Added substr check for preventing 
+  // any wrong attempts or hacks !
+  if(substr($path, -11) == 'fontawesome' && !is_dir($path)){
     drush_mkdir($path);
   }
-
   if (is_dir($path . '/css')) {
-    drush_log('Fontawesome already present. No download required.', 'ok');
+    drush_log(dt('Fontawesome already present at @path. No download required.',array('@path' => $path)), 'ok');
   }
   elseif (drush_op('chdir', $path) &&
-      drush_shell_exec('wget http://fortawesome.github.io/Font-Awesome/assets/font-awesome-4.2.0.zip') &&
-      drush_shell_exec('unzip font-awesome-4.2.0.zip') &&
-      drush_shell_exec('mv -R font-awesome-4.2.0/* .') &&
-      drush_shell_exec('rm font-awesome-4.2.0;rm font-awesome-4.2.0.zip')) {
+      drush_shell_exec('wget ' .FONTAWESOME_DOWNLOAD_URL. '  -O fontawesome.zip') &&
+      drush_shell_exec('unzip fontawesome.zip') &&
+      drush_shell_exec('mv Font-Awesome-*/* .') &&
+      drush_shell_exec('rm -rf Font-Awesome-*')) {
     drush_log(dt('The latest Fontawesome library has been downloaded to @path', array('@path' => $path)), 'success');
   }
   else {
