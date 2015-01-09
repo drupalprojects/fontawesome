@@ -46,11 +46,15 @@ INSTALLATION
 
 2. Manually
 
-    a. Download & extract "Font Awesome" (http://fontawesome.io) and place
-       inside "sites/all/libraries/fontawesome" directory. The CSS file should
-       be sites/all/libraries/fontawesome/css/font-awesome.css
-       Direct link for downloading version 4.2.0 is: 
-       http://fortawesome.github.io/Font-Awesome/assets/font-awesome-4.2.0.zip
+    a. Install the "Font Awesome" library following one of these 2 options:
+       - run "drush fa-download" (recommended, it will download the right
+         package and extract it at the right place for you.)
+       - manual install: Download & extract "Font Awesome" 
+         (http://fontawesome.io) and place inside 
+         "sites/all/libraries/fontawesome" directory. The CSS file should
+         be sites/all/libraries/fontawesome/css/font-awesome.css
+         Direct link for downloading version 4.2.0 is: 
+         http://fortawesome.github.io/Font-Awesome/assets/font-awesome-4.2.0.zip
     b. Enable the module at Administer >> Site building >> Modules.
 
 CREDITS
