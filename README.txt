@@ -42,7 +42,9 @@ INSTALLATION
 
     $ drush cc drush
 
-    No need to run separate  command for installing library.
+    and then using:-
+
+    $ drush fa-download
 
 2. Manually
 
