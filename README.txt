@@ -42,7 +42,7 @@ INSTALLATION
 
     $ drush cc drush
 
-    and then using:-
+    and then using another drush command:-
 
     $ drush fa-download
 
