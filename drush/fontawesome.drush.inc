@@ -88,6 +88,7 @@ function fontawesome_drush_lib_download() {
       drush_shell_exec('wget ' . FONTAWESOME_DOWNLOAD_URL . '  -O fontawesome.zip') &&
       drush_shell_exec('unzip fontawesome.zip') &&
       drush_shell_exec('mv font-awesome/* .') &&
+      drush_shell_exec('rm -rf fontawesome.zip') &&
       drush_shell_exec('rm -rf font-awesome')) {
     drush_log(dt('The latest Fontawesome library has been downloaded to @path', array('@path' => $path)), 'success');
   }
