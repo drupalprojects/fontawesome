@@ -49,13 +49,13 @@ function fontawesome_libraries_info() {
 }
 
 /**
- * Implements hook_preprocess_page().
+ * Implements hook_preprocess_html().
  *
  * Purposefully only load on page requests and not hook_init(). This is
  * required so it does not increase the bootstrap time of Drupal when it isn't
  * necessary.
  */
-function fontawesome_preprocess_page() {
+function fontawesome_preprocess_html() {
   libraries_load(FONTAWESOME_LIBRARY);
 }
 
