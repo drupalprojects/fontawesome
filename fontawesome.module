@@ -61,7 +61,13 @@ function fontawesome_preprocess_html() {
     drupal_add_css(FONTAWESOME_CDN_URL, array('type' => 'external'));
   }
   else {
-    libraries_load(FONTAWESOME_LIBRARY);
+    $library = libraries_load(FONTAWESOME_LIBRARY);
+    if (!$library['loaded']) {
+      drupal_set_message($library['error message'] . t('Please make sure that '
+              . 'fontawesome was download & extracted at sites/all/libraries/fontawesome directory.'
+              . 'Please check README.txt for more details.'), 
+              'warning');
+    }
   }
 }
 
