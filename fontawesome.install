@@ -34,3 +34,12 @@ function fontawesome_requirements($phase) {
 
   return $requirements;
 }
+
+/**
+* Implementation of hook_install
+*
+*/
+function fontawesome_uninstall(){
+  // Delete set variables.
+  db_query("DELETE FROM {variable} WHERE name like 'fontawesome_%'");
+}
