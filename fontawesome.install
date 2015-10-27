@@ -42,11 +42,16 @@ function fontawesome_requirements($phase) {
 function fontawesome_uninstall(){
   // Delete set variables.
   db_query("DELETE FROM {variable} WHERE name like 'fontawesome_%'");
+  
+  //Icon API module : Delete fontawesome icon bundle & clear cache
+  if(module_exists('icon') && ($cache = cache_get('icon_bundles')) && !empty($cache->data)){
+    $fa_icon_bundle = isset($cache->data['fontawesome']) ? $cache->data['fontawesome'] : array();
+    $fa_icon_bundle['path'] = isset($fa_icon_bundle['path']) ? $fa_icon_bundle['path'] : 'fontawesome';
+    icon_bundle_delete($fa_icon_bundle);
+  }
 }
 
 /**
-* Implementation of hook_update().
-*
 * Update the fontawesome module from 1.x to 2.x version
 */
 function fontawesome_update_7001(&$sandbox) {
