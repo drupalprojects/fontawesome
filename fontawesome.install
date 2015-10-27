@@ -43,3 +43,12 @@ function fontawesome_uninstall(){
   // Delete set variables.
   db_query("DELETE FROM {variable} WHERE name like 'fontawesome_%'");
 }
+
+/**
+* Implementation of hook_update().
+*
+* Update the fontawesome module from 1.x to 2.x version
+*/
+function fontawesome_update_7001(&$sandbox) {
+  registry_rebuild();
+}
