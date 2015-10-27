@@ -23,8 +23,8 @@ function fontawesome_requirements($phase) {
 
     // Don't really check for Font Awesome if we are using the CDN version.
     if (variable_get('fontawesome_use_cdn', FALSE)) {
-      $requirements['fontawesome']['severity'] = $fontawesome['installed'] ? REQUIREMENT_OK : REQUIREMENT_WARNING;
-      $requirements['fontawesome']['value'] = $fontawesome['installed'] ? t('Using CDN version: ' . FONTAWESOME_CDN_URL) : $fontawesome['error message'];
+      $requirements['fontawesome']['severity'] = REQUIREMENT_OK;
+      $requirements['fontawesome']['value'] = t('Using CDN version: ') . FONTAWESOME_CDN_URL;
     }
     else {
       $requirements['fontawesome']['severity'] = $fontawesome['installed'] ? REQUIREMENT_OK : REQUIREMENT_WARNING;
