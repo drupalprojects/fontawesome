@@ -56,8 +56,9 @@ function fontawesome_libraries_info() {
  * required so it does not increase the bootstrap time of Drupal when it isn't
  * necessary.
  */
-function fontawesome_preprocess_html() {
+function fontawesome_preprocess_html(&$variables) {
   if (\Drupal::config('fontawesome.settings')->get('fontawesome_use_cdn')) {
+    $variables['#attached'] = array( 'css' => array(FONTAWESOME_CDN_URL), );
     // @FIXME
 // The Assets API has totally changed. CSS, JavaScript, and libraries are now
 // attached directly to render arrays using the #attached property.
