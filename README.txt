@@ -7,10 +7,11 @@ CONTENTS OF THIS FILE
  * Credits
 
 
-INTRODUCTION 2.x
+INTRODUCTION 8.x version
 ------------
 Font Awesome (http://fontawesome.io) is the iconic font designed for use with
-Bootstrap (http://getbootstrap.com).
+Bootstrap (http://getbootstrap.com). 8.x branch is under heavy development and 
+is supposed to be used for testing and bug fixes only.
 
 "fontawesome" provides integration of "Font Awesome" with Drupal. Once enabled
 "Font Awesome" icon fonts could be used as:
