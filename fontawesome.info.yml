@@ -3,7 +3,7 @@ description: 'Iconic font designed for use with Twitter Bootstrap.'
 core: 8.x
 php: '5'
 dependencies:
-  - 'libraries (>=7.x-2.0)'
+  - 'libraries'
 version: 7.x-2.5
 project: fontawesome
 datestamp: '1445924954'
