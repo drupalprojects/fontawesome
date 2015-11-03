@@ -57,8 +57,16 @@ function fontawesome_libraries_info() {
  * necessary.
  */
 function fontawesome_preprocess_html() {
-  if (variable_get('fontawesome_use_cdn', FALSE)) {
-    drupal_add_css(FONTAWESOME_CDN_URL, array('type' => 'external'));
+  if (\Drupal::config('fontawesome.settings')->get('fontawesome_use_cdn')) {
+    // @FIXME
+// The Assets API has totally changed. CSS, JavaScript, and libraries are now
+// attached directly to render arrays using the #attached property.
+// 
+// 
+// @see https://www.drupal.org/node/2169605
+// @see https://www.drupal.org/node/2408597
+// drupal_add_css(FONTAWESOME_CDN_URL, array('type' => 'external'));
+
   }
   else {
     $library = libraries_load(FONTAWESOME_LIBRARY);
@@ -81,7 +89,7 @@ function fontawesome_form_system_performance_settings_alter(&$form, &$form_state
   $form['bandwidth_optimization']['fontawesome_use_cdn'] = array(
     '#type' => 'checkbox',
     '#title' => t('Use CDN version of FontAwesome.'),
-    '#default_value' => variable_get('fontawesome_use_cdn', FALSE),
+    '#default_value' => \Drupal::config('fontawesome.settings')->get('fontawesome_use_cdn'),
   );
 }
 
@@ -109,7 +117,7 @@ function fontawesome_icon_bundle_configure(&$settings, &$form_state, &$complete_
         '@fontawesome' => FONTAWESOME_NAME,
         '%tag' => '<' . $bundle['settings']['tag'] . '>',
       )),
-      '#options' => drupal_map_assoc(array('i', 'span', 'div')),
+      '#options' => array_combine(array('i', 'span', 'div'), array('i', 'span', 'div')),
       '#default_value' => $bundle['settings']['tag'],
     );
   }
