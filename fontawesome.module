@@ -50,16 +50,19 @@ function fontawesome_libraries_info() {
 }
 
 /**
- * Implements hook_preprocess_html().
+ * Implements hook__page_attachments().
  *
  * Purposefully only load on page requests and not hook_init(). This is
  * required so it does not increase the bootstrap time of Drupal when it isn't
  * necessary.
  */
-function fontawesome_preprocess_html(&$variables) {
+function fontawesome_page_attachments(array &$page) {
+  //@TODO: move inside condition
+  $page['#attached']['library'][] = 'fontawesome/fontawesome';
+  
   if (\Drupal::config('fontawesome.settings')->get('fontawesome_use_cdn')) {
-    $variables['#attached'] = array( 'css' => array(FONTAWESOME_CDN_URL), );
-  }
+    
+  } 
   else {
     $library = libraries_load(FONTAWESOME_LIBRARY);
     if (!$library['loaded']) {
@@ -77,14 +80,23 @@ function fontawesome_preprocess_html(&$variables) {
  * Add a checkbox to Drupal Bandwidth optimization settings in performance page
  * to provide an option to load CDN version of FontAwesome.
  */
-function fontawesome_form_system_performance_settings_alter(&$form, &$form_state, $form_id) {
+function fontawesome_form_system_performance_settings_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
   $form['bandwidth_optimization']['fontawesome_use_cdn'] = array(
     '#type' => 'checkbox',
     '#title' => t('Use CDN version of FontAwesome.'),
     '#default_value' => \Drupal::config('fontawesome.settings')->get('fontawesome_use_cdn'),
   );
-  
+  //$form['actions']['submit']['#submit'][] = 'fontawesome_form_system_performance_settings_alter_submit';
 }
+
+/**
+ * @TODO: Fix this !
+ */
+//function fontawesome_form_system_performance_settings_alter_submit(array &$form, FormStateInterface $form_state) {
+//  $this->config('fontawesome.settings')
+//    ->set('fontawesome_use_cdn', $form_state->getValue('fontawesome_use_cdn'))
+//    ->save();
+//}
 
 /**
  * Implements hook_icon_providers().
