@@ -91,6 +91,7 @@ function fontawesome_form_system_performance_settings_alter(&$form, &$form_state
     '#title' => t('Use CDN version of FontAwesome.'),
     '#default_value' => \Drupal::config('fontawesome.settings')->get('fontawesome_use_cdn'),
   );
+  
 }
 
 /**
