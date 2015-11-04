@@ -57,11 +57,8 @@ function fontawesome_libraries_info() {
  * necessary.
  */
 function fontawesome_page_attachments(array &$page) {
-  //@TODO: move inside condition
-  $page['#attached']['library'][] = 'fontawesome/fontawesome';
-  
   if (\Drupal::config('fontawesome.settings')->get('fontawesome_use_cdn')) {
-    
+    $page['#attached']['library'][] = 'fontawesome/fontawesome.cdn';
   } 
   else {
     $library = libraries_load(FONTAWESOME_LIBRARY);
@@ -70,6 +67,8 @@ function fontawesome_page_attachments(array &$page) {
               . 'fontawesome was download & extracted at sites/all/libraries/fontawesome directory.'
               . 'Please check README.txt for more details.'), 
               'warning');
+    }else{
+      $page['#attached']['library'][] = 'fontawesome/fontawesome';
     }
   }
 }
