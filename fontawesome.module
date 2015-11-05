@@ -64,7 +64,7 @@ function fontawesome_page_attachments(array &$page) {
     $library = libraries_load(FONTAWESOME_LIBRARY);
     if (!$library['loaded']) {
       drupal_set_message($library['error message'] . t('Please make sure that '
-              . 'fontawesome was download & extracted at sites/all/libraries/fontawesome directory.'
+              . 'fontawesome was download & extracted at /libraries/fontawesome directory.'
               . 'Please check README.txt for more details.'), 
               'warning');
     }else{
