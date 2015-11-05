@@ -37,7 +37,7 @@ INSTALLATION
     $ drush pm-enable fontawesome
 
     Upon enabling, this will also attempt to download and install the library
-    in `sites/all/libraries/fontawesome`. If, for whatever reason, this process
+    in `/libraries/fontawesome`. If, for whatever reason, this process
     fails, you can re-run the library install manually by first clearing Drush
     caches:
 
@@ -54,8 +54,8 @@ INSTALLATION
          package and extract it at the right place for you.)
        - manual install: Download & extract "Font Awesome" 
          (http://fontawesome.io) and place inside 
-         "sites/all/libraries/fontawesome" directory. The CSS file should
-         be sites/all/libraries/fontawesome/css/font-awesome.css
+         "/libraries/fontawesome" directory. The CSS file should
+         be /libraries/fontawesome/css/font-awesome.css
          Direct link for downloading latest version (current is v4.2.0) is: 
          https://github.com/FortAwesome/Font-Awesome/archive/master.zip
     b. Enable the module at Administer >> Site building >> Modules.
