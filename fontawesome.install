@@ -40,8 +40,9 @@ function fontawesome_requirements($phase) {
 */
 function fontawesome_uninstall(){
   // Delete set variables.
-  db_query("DELETE FROM {variable} WHERE name like 'fontawesome_%'");
-  
+  db_query("DELETE FROM {config} WHERE name like 'fontawesome.settings'");
+  db_query("DELETE FROM {key_value} WHERE name like 'fontawesome'");
+
   //Icon API module : Delete fontawesome icon bundle & clear cache
   if(\Drupal::moduleHandler()->moduleExists('icon') && ($cache = \Drupal::cache()->get('icon_bundles')) && !empty($cache->data)){
     $fa_icon_bundle = isset($cache->data['fontawesome']) ? $cache->data['fontawesome'] : array();
