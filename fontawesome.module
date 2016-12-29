@@ -12,16 +12,18 @@ define('FONTAWESOME_CDN_URL', '//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/
 define('FONTAWESOME_DOWNLOAD_URL', 'https://github.com/FortAwesome/Font-Awesome/archive/v4.2.0.zip');
 define('FONTAWESOME_PREFIX', 'fa');
 
+use Drupal\Core\Routing\RouteMatchInterface;
+
 /**
  * Implements hook_help().
  */
-function fontawesome_help($path, $arg) {
-  switch ($path) {
-    case 'admin/help#fontawesome':
-      return '<p><i class="icon-flag icon-large"></i>' . t('<a href="!fontawesome_url">@fontawesome</a> is an iconic font designed for use with <a href="!bootstrap_url">Bootstrap</a>.', array(
+function fontawesome_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.fontawesome':
+      return '<p><i class="icon-flag icon-large"></i>' . t('<a href=":fontawesome_url">@fontawesome</a> is an iconic font designed for use with <a href=":bootstrap_url">Bootstrap</a>.', array(
         '@fontawesome' => FONTAWESOME_NAME,
-        '!fontawesome_url' => FONTAWESOME_URL,
-        '!bootstrap_url' => 'http://getbootstrap.com',
+        ':fontawesome_url' => FONTAWESOME_URL,
+        ':bootstrap_url' => 'http://getbootstrap.com',
       )) . '</p>';
   }
 }
@@ -59,13 +61,13 @@ function fontawesome_libraries_info() {
 function fontawesome_page_attachments(array &$page) {
   if (\Drupal::config('fontawesome.settings')->get('fontawesome_use_cdn')) {
     $page['#attached']['library'][] = 'fontawesome/fontawesome.cdn';
-  } 
+  }
   else {
     $library = libraries_load(FONTAWESOME_LIBRARY);
     if (!$library['loaded']) {
       drupal_set_message($library['error message'] . t('Please make sure that '
               . 'fontawesome was download & extracted at /libraries/fontawesome directory.'
-              . 'Please check README.txt for more details.'), 
+              . 'Please check README.txt for more details.'),
               'warning');
     }else{
       $page['#attached']['library'][] = 'fontawesome/fontawesome';
