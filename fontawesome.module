@@ -63,13 +63,14 @@ function fontawesome_page_attachments(array &$page) {
     $page['#attached']['library'][] = 'fontawesome/fontawesome.cdn';
   }
   else {
-    $library = libraries_load(FONTAWESOME_LIBRARY);
-    if (!$library['loaded']) {
+    $library = libraries_detect(FONTAWESOME_LIBRARY);
+    if (!$library['installed']) {
       drupal_set_message($library['error message'] . t('Please make sure that '
               . 'fontawesome was download & extracted at /libraries/fontawesome directory.'
               . 'Please check README.txt for more details.'),
               'warning');
-    }else{
+    }
+    else {
       $page['#attached']['library'][] = 'fontawesome/fontawesome';
     }
   }
