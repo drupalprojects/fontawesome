@@ -67,16 +67,16 @@ function fontawesome_drush_help($section) {
  */
 function fontawesome_drush_lib_download() {
   $args = func_get_args();
-  if ($args[0]) {
+  if (isset($args[0])) {
     $path = $args[0];
   }
   else {
     //we have dependencies on libraries module so no need to check for that
     //TODO: any way to get path for libraries directory?
     //Just in case if it is site specific? e.g. sites/domain.com/libraries ?
-    $path = drush_get_context('DRUSH_\Drupal::root()') . '/sites/all/libraries/fontawesome';
+    $path = DRUPAL_ROOT . '/sites/all/libraries/fontawesome';
   }
-  // Create the path if it does not exist yet. Added substr check for preventing 
+  // Create the path if it does not exist yet. Added substr check for preventing
   // any wrong attempts or hacks !
   if (substr($path, -11) == 'fontawesome' && !is_dir($path)) {
     drush_mkdir($path);
