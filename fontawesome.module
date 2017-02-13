@@ -186,7 +186,7 @@ function fontawesome_extract_icons() {
     $content = (string) $response->getBody();
   }
   // Otherwise get CSS content from the local library
-  else {
+  else if(\Drupal::moduleHandler()->moduleExists('libraries')){
     $library = libraries_load(FONTAWESOME_LIBRARY);
     $filepath = DRUPAL_ROOT . '/' . $library['library path'] . '/css/font-awesome.css';
 
@@ -197,8 +197,7 @@ function fontawesome_extract_icons() {
   if (preg_match_all('@\.fa-(.*?):before@m', $content, $matches)) {
     $icons = $matches[1];
     asort($icons);
-
-    return drupal_map_assoc($icons);
+    return array_combine($icons, $icons);
   }
 
   return array();
