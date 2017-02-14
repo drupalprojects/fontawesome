@@ -14,10 +14,10 @@ function fontawesome_requirements($phase) {
   // Report the version of Font Awesome.
   if ($phase == 'runtime') {
     // Make sure Libraries is loaded before loading Font Awesome.
-    $fontawesome = libraries_detect('fontawesome');
+    $fontawesome = file_exists('library://fontawesome');
 
     $requirements['fontawesome'] = array(
-      'title' => $fontawesome['name'],
+      'title' => t('Fontawesome'),
     );
 
     // Don't really check for Font Awesome if we are using the CDN version.
@@ -26,8 +26,8 @@ function fontawesome_requirements($phase) {
       $requirements['fontawesome']['value'] = t('Using CDN version: ') . FONTAWESOME_CDN_URL;
     }
     else {
-      $requirements['fontawesome']['severity'] = $fontawesome['installed'] ? REQUIREMENT_OK : REQUIREMENT_WARNING;
-      $requirements['fontawesome']['value'] = $fontawesome['installed'] ? $fontawesome['version'] : $fontawesome['error message'];
+      $requirements['fontawesome']['severity'] = $fontawesome ? REQUIREMENT_OK : REQUIREMENT_WARNING;
+      $requirements['fontawesome']['value'] = t('Fontawesome library is installed.');
     }
   }
 

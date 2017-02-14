@@ -2,9 +2,6 @@ name: 'Font Awesome'
 type: module
 description: 'Iconic font designed for use with Twitter Bootstrap.'
 
-dependencies:
-  - 'libraries'
-
 core: 8.x
 project: fontawesome
 datestamp: '1445924954'
