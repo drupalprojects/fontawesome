@@ -41,6 +41,13 @@ function fontawesome_page_attachments(array &$page) {
     $page['#attached']['library'][] = 'fontawesome/fontawesome.cdn';
   }
   else {
+    $fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome');
+    if (!file_exists(DRUPAL_ROOT . '/' . $fontawesome_library['css'][0]['data'])) {
+      drupal_set_message(t('The Font Awesome library could not be found. Please verify Font Awesome was downloaded and extracted at %directory. Please check the Font Awesome module README file for more details.', [
+        '%directory' => 'libraries/fontawesome',
+      ]), 'warning');
+    }
+
     $page['#attached']['library'][] = 'fontawesome/fontawesome';
   }
 }

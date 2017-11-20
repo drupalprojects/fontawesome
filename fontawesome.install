@@ -23,13 +23,17 @@ function fontawesome_requirements($phase) {
       $requirements['fontawesome']['value'] = t('Using CDN version: ') . FONTAWESOME_CDN_URL;
     }
     // Check if the library exists locally.
-    elseif (file_exists(DRUPAL_ROOT . '/libraries/fontawesome')) {
-      $requirements['fontawesome']['severity'] = REQUIREMENT_OK;
-      $requirements['fontawesome']['value'] = t('Font Awesome library is installed.');
-    }
     else {
-      $requirements['fontawesome']['severity'] = REQUIREMENT_WARNING;
-      $requirements['fontawesome']['value'] = t('Font Awesome library is not installed. View the README for more information on installing Font Awesome.');
+      // Verify the library is installed.
+      $fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome');
+      if (file_exists(DRUPAL_ROOT . '/' . $fontawesome_library['css'][0]['data'])) {
+        $requirements['fontawesome']['severity'] = REQUIREMENT_OK;
+        $requirements['fontawesome']['value'] = t('Font Awesome library is installed.');
+      }
+      else {
+        $requirements['fontawesome']['severity'] = REQUIREMENT_WARNING;
+        $requirements['fontawesome']['value'] = t('Font Awesome library is not installed. View the README for more information on installing Font Awesome.');
+      }
     }
   }
 
