@@ -14,7 +14,7 @@ function fontawesome_requirements($phase) {
   // Report the version of Font Awesome.
   if ($phase == 'runtime') {
     // Make sure Libraries is loaded before loading Font Awesome.
-    $fontawesome = file_exists('library://fontawesome');
+    $fontawesome = file_exists(DRUPAL_ROOT . '/libraries/fontawesome');
 
     $requirements['fontawesome'] = array(
       'title' => t('Fontawesome'),
