@@ -13,9 +13,6 @@ function fontawesome_requirements($phase) {
 
   // Report the version of Font Awesome.
   if ($phase == 'runtime') {
-    // Make sure Libraries is loaded before loading Font Awesome.
-    $fontawesome = file_exists(DRUPAL_ROOT . '/libraries/fontawesome');
-
     $requirements['fontawesome'] = array(
       'title' => t('Fontawesome'),
     );
@@ -25,9 +22,14 @@ function fontawesome_requirements($phase) {
       $requirements['fontawesome']['severity'] = REQUIREMENT_OK;
       $requirements['fontawesome']['value'] = t('Using CDN version: ') . FONTAWESOME_CDN_URL;
     }
+    // Check if the library exists locally.
+    elseif (file_exists(DRUPAL_ROOT . '/libraries/fontawesome')) {
+      $requirements['fontawesome']['severity'] = REQUIREMENT_OK;
+      $requirements['fontawesome']['value'] = t('Font Awesome library is installed.');
+    }
     else {
-      $requirements['fontawesome']['severity'] = $fontawesome ? REQUIREMENT_OK : REQUIREMENT_WARNING;
-      $requirements['fontawesome']['value'] = t('Fontawesome library is installed.');
+      $requirements['fontawesome']['severity'] = REQUIREMENT_WARNING;
+      $requirements['fontawesome']['value'] = t('Font Awesome library is not installed. View the README for more information on installing Font Awesome.');
     }
   }
 
