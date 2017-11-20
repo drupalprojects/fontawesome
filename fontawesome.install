@@ -19,8 +19,11 @@ function fontawesome_requirements($phase) {
 
     // Don't really check for Font Awesome if we are using the CDN version.
     if (\Drupal::config('fontawesome.settings')->get('fontawesome_use_cdn')) {
+      $fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome.cdn');
       $requirements['fontawesome']['severity'] = REQUIREMENT_OK;
-      $requirements['fontawesome']['value'] = t('Using CDN version: ') . FONTAWESOME_CDN_URL;
+      $requirements['fontawesome']['value'] = t('Using CDN version: %version', [
+        '%version' => $fontawesome_library['css'][0]['data'],
+      ]);
     }
     // Check if the library exists locally.
     else {
