@@ -59,30 +59,6 @@ function fontawesome_page_attachments(array &$page) {
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
- *
- * Add a checkbox to Drupal Bandwidth optimization settings in performance page
- * to provide an option to load CDN version of FontAwesome.
- */
-function fontawesome_form_system_performance_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['bandwidth_optimization']['fontawesome_use_cdn'] = [
-    '#type' => 'checkbox',
-    '#title' => t('Use CDN version of FontAwesome.'),
-    '#default_value' => \Drupal::config('fontawesome.settings')->get('fontawesome_use_cdn'),
-  ];
-  $form['#submit'][] = 'fontawesome_form_system_performance_settings_alter_submit';
-}
-
-/**
- * Submit handler to save configuration settings.
- */
-function fontawesome_form_system_performance_settings_alter_submit($form, $form_state) {
-  \Drupal::configFactory()->getEditable('fontawesome.settings')
-    ->set('fontawesome_use_cdn', $form_state->getValue('fontawesome_use_cdn'))
-    ->save();
-}
-
-/**
  * Implements hook_icon_providers().
  */
 function fontawesome_icon_providers() {
@@ -173,10 +149,9 @@ function fontawesome_extract_icons() {
     $content = (string) $response->getBody();
   }
   // Otherwise get CSS content from the local library.
-  elseif (\Drupal::moduleHandler()->moduleExists('libraries')) {
-    // FIXME - remove libraries dependency here.
-    $library = libraries_load('fontawesome');
-    $filepath = DRUPAL_ROOT . '/' . $library['library path'] . '/css/font-awesome.css';
+  else {
+    $fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome');
+    $filepath = DRUPAL_ROOT . '/' . $fontawesome_library['css'][0]['data'];
 
     $content = file_exists($filepath) ? file_get_contents($filepath) : '';
   }

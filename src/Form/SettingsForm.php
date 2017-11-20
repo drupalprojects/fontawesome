@@ -36,7 +36,7 @@ class SettingsForm extends ConfigFormBase {
     $form['fontawesome_use_cdn'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Use external file?'),
-      '#description' => $this->t('Checking this box will cause the Plotly.js javascript file to be loaded externally rather than from the local library file.'),
+      '#description' => $this->t('Checking this box will cause the Font Awesome javascript file to be loaded externally rather than from the local library file.'),
       '#default_value' => $fontawesome_config->get('fontawesome_use_cdn'),
     ];
 
