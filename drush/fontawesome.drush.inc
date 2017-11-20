@@ -28,8 +28,7 @@ function fontawesome_drush_command() {
 function fontawesome_drush_help($section) {
   switch ($section) {
     case 'drush:fa-download':
-      return dt("Downloads the required Fontawesome library from "
-              . "http://fortawesome.github.io.");
+      return dt("Downloads the required Fontawesome library from http://fortawesome.github.io.");
   }
 }
 
