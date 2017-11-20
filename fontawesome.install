@@ -52,10 +52,3 @@ function fontawesome_uninstall(){
     icon_bundle_delete($fa_icon_bundle);
   }
 }
-
-/**
-* Update the fontawesome module from 1.x to 2.x version
-*/
-function fontawesome_update_7001(&$sandbox) {
-  registry_rebuild();
-}

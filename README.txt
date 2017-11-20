@@ -10,7 +10,7 @@ CONTENTS OF THIS FILE
 INTRODUCTION 8.x version
 ------------
 Font Awesome (http://fontawesome.io) is the iconic font designed for use with
-Bootstrap (http://getbootstrap.com). 8.x branch is under heavy development and 
+Bootstrap (http://getbootstrap.com). 8.x branch is under heavy development and
 is supposed to be used for testing and bug fixes only.
 
 "fontawesome" provides integration of "Font Awesome" with Drupal. Once enabled
@@ -52,8 +52,8 @@ INSTALLATION
     a. Install the "Font Awesome" library following one of these 2 options:
        - run "drush fa-download" (recommended, it will download the right
          package and extract it at the right place for you.)
-       - manual install: Download & extract "Font Awesome" 
-         (http://fontawesome.io) and place inside 
+       - manual install: Download & extract "Font Awesome"
+         (http://fontawesome.io) and place inside
          "/libraries/fontawesome" directory. The CSS file should
          be /libraries/fontawesome/css/font-awesome.css
          Direct link for downloading latest version (current is v4.5.0) is:
@@ -66,3 +66,4 @@ CREDITS
 * Inder Singh (inders) http://indersingh.com | https://www.drupal.org/u/inders
 * Mark Carver https://www.drupal.org/u/mark-carver
 * Brian Gilbert https://drupal.org/u/realityloop
+* Daniel Moberly https://drupal.org/u/danielmoberly
