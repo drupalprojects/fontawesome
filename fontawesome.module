@@ -30,7 +30,23 @@ function fontawesome_help($route_name, RouteMatchInterface $route_match) {
 }
 
 /**
- * Implements hook__page_attachments().
+ * Implements hook_ckeditor_css_alter().
+ */
+function fontawesome_ckeditor_css_alter(&$css, $editor) {
+  dpm('hey');
+  // Attach CSS to CKEditor where appropriate.
+  if (\Drupal::config('fontawesome.settings')->get('fontawesome_use_cdn')) {
+    $fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome.cdn');
+  }
+  else {
+    $fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome');
+  }
+  $css[] = $fontawesome_library['css'][0]['data'];
+  dpm($css);
+}
+
+/**
+ * Implements hook_page_attachments().
  *
  * Purposefully only load on page requests and not hook_init(). This is
  * required so it does not increase the bootstrap time of Drupal when it isn't
