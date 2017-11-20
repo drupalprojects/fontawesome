@@ -1,7 +1,7 @@
 <?php
+
 /**
  * @file
- * fontawesome.module
  * Drupal integration with Font Awesome, the iconic font for use with Bootstrap.
  */
 
@@ -13,6 +13,7 @@ define('FONTAWESOME_DOWNLOAD_URL', 'https://github.com/FortAwesome/Font-Awesome/
 define('FONTAWESOME_PREFIX', 'fa');
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_help().
@@ -20,11 +21,11 @@ use Drupal\Core\Routing\RouteMatchInterface;
 function fontawesome_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
     case 'help.page.fontawesome':
-      return '<p><i class="icon-flag icon-large"></i>' . t('<a href=":fontawesome_url">@fontawesome</a> is an iconic font designed for use with <a href=":bootstrap_url">Bootstrap</a>.', array(
+      return '<p><i class="icon-flag icon-large"></i>' . t('<a href=":fontawesome_url">@fontawesome</a> is an iconic font designed for use with <a href=":bootstrap_url">Bootstrap</a>.', [
         '@fontawesome' => FONTAWESOME_NAME,
         ':fontawesome_url' => FONTAWESOME_URL,
         ':bootstrap_url' => 'http://getbootstrap.com',
-      )) . '</p>';
+      ]) . '</p>';
   }
 }
 
@@ -50,32 +51,32 @@ function fontawesome_page_attachments(array &$page) {
  * Add a checkbox to Drupal Bandwidth optimization settings in performance page
  * to provide an option to load CDN version of FontAwesome.
  */
-function fontawesome_form_system_performance_settings_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  $form['bandwidth_optimization']['fontawesome_use_cdn'] = array(
+function fontawesome_form_system_performance_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['bandwidth_optimization']['fontawesome_use_cdn'] = [
     '#type' => 'checkbox',
     '#title' => t('Use CDN version of FontAwesome.'),
     '#default_value' => \Drupal::config('fontawesome.settings')->get('fontawesome_use_cdn'),
-  );
+  ];
   $form['#submit'][] = 'fontawesome_form_system_performance_settings_alter_submit';
 }
 
 /**
- * Save configurations
+ * Submit handler to save configuration settings.
  */
 function fontawesome_form_system_performance_settings_alter_submit($form, $form_state) {
   \Drupal::configFactory()->getEditable('fontawesome.settings')
-   ->set('fontawesome_use_cdn', $form_state->getValue('fontawesome_use_cdn'))
-   ->save();
+    ->set('fontawesome_use_cdn', $form_state->getValue('fontawesome_use_cdn'))
+    ->save();
 }
 
 /**
  * Implements hook_icon_providers().
  */
 function fontawesome_icon_providers() {
-  $providers[FONTAWESOME_LIBRARY] = array(
+  $providers[FONTAWESOME_LIBRARY] = [
     'title' => FONTAWESOME_NAME,
     'url' => FONTAWESOME_URL,
-  );
+  ];
   return $providers;
 }
 
@@ -85,16 +86,19 @@ function fontawesome_icon_providers() {
 function fontawesome_icon_bundle_configure(&$settings, &$form_state, &$complete_form) {
   $bundle = $form_state['bundle'];
   if ($bundle['provider'] === FONTAWESOME_LIBRARY) {
-    $settings['tag'] = array(
+    $settings['tag'] = [
       '#type' => 'select',
       '#title' => t('HTML Markup'),
-      '#description' => t('Choose the HTML markup tag that @fontawesome icons should be created with. Typically, this is a %tag tag, however it can be changed to suite the theme requirements.', array(
+      '#description' => t('Choose the HTML markup tag that @fontawesome icons should be created with. Typically, this is a %tag tag, however it can be changed to suite the theme requirements.', [
         '@fontawesome' => FONTAWESOME_NAME,
         '%tag' => '<' . $bundle['settings']['tag'] . '>',
-      )),
-      '#options' => array_combine(array('i', 'span', 'div'), array('i', 'span', 'div')),
+      ]),
+      '#options' => array_combine(
+        ['i', 'span', 'div'],
+        ['i', 'span', 'div']
+      ),
       '#default_value' => $bundle['settings']['tag'],
-    );
+    ];
   }
 }
 
@@ -124,49 +128,51 @@ function fontawesome_preprocess_icon_sprite(&$variables) {
  * @todo Extract icons from CSS or JSON file (currently not possible).
  */
 function fontawesome_icon_bundles() {
-  $bundles[FONTAWESOME_LIBRARY] = array(
+  $bundles[FONTAWESOME_LIBRARY] = [
     'title' => FONTAWESOME_NAME,
     'provider' => FONTAWESOME_LIBRARY,
     'render' => 'sprite',
-    'settings' => array(
+    'settings' => [
       'tag' => 'i',
-    ),
+    ],
     'icons' => fontawesome_extract_icons(),
-  );
+  ];
   return $bundles;
 }
+
 /**
  * Extracts all icons from the CSS file.
  *
  * @return array
+ *   Array containing icons.
  */
 function fontawesome_extract_icons() {
-  // If CDN is enabled, get CSS content from the CDN URL
+  // If CDN is enabled, get CSS content from the CDN URL.
   if (\Drupal::config('fontawesome.settings')->get('fontawesome_use_cdn')) {
     $url = FONTAWESOME_CDN_URL;
 
-    // The URL needs to have a schema to work with drupal_http_request
+    // The URL needs to have a schema to work with drupal_http_request.
     if (strpos($url, '//') === 0) {
       $url = 'http:' . $url;
     }
 
-    $response = \Drupal::httpClient()->get($url, array('headers' => array('Accept' => 'text/plain')));
+    $response = \Drupal::httpClient()->get($url, ['headers' => ['Accept' => 'text/plain']]);
     $content = (string) $response->getBody();
   }
-  // Otherwise get CSS content from the local library
-  else if(\Drupal::moduleHandler()->moduleExists('libraries')){
+  // Otherwise get CSS content from the local library.
+  elseif (\Drupal::moduleHandler()->moduleExists('libraries')) {
     $library = libraries_load(FONTAWESOME_LIBRARY);
     $filepath = DRUPAL_ROOT . '/' . $library['library path'] . '/css/font-awesome.css';
 
     $content = file_exists($filepath) ? file_get_contents($filepath) : '';
   }
 
-  // Parse the CSS content
+  // Parse the CSS content.
   if (preg_match_all('@\.fa-(.*?):before@m', $content, $matches)) {
     $icons = $matches[1];
     asort($icons);
     return array_combine($icons, $icons);
   }
 
-  return array();
+  return [];
 }

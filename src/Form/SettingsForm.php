@@ -4,15 +4,12 @@ namespace Drupal\fontawesome\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Component\Utility\UrlHelper;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Asset\LibraryDiscovery;
-use Drupal\Core\File\FileSystem;
 
 /**
  * Defines a form that configures fontawesome settings.
  */
 class SettingsForm extends ConfigFormBase {
+
   /**
    * {@inheritdoc}
    */
