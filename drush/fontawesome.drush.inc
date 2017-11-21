@@ -51,7 +51,7 @@ function fontawesome_drush_lib_download($path = '') {
     drush_log(dt('Fontawesome already present at @path. No download required.', ['@path' => $path]), 'ok');
   }
   elseif (drush_op('chdir', $path) &&
-      $fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome.cdn');
+      $fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome.cdn') &&
       drush_shell_exec('wget ' . $fontawesome_library['remote'] . '  -O fontawesome.zip') &&
       drush_shell_exec('unzip fontawesome.zip') &&
       drush_shell_exec('mv Font-Awesome-*/* .') &&
