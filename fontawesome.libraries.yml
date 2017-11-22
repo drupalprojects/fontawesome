@@ -1,5 +1,5 @@
 fontawesome:
-  remote: https://github.com/FortAwesome/Font-Awesome/
+  remote: http://fontawesome.io/assets/font-awesome-4.7.0.zip
   license:
     name: MIT
     url: http://fontawesome.io/license/
