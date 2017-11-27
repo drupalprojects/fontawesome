@@ -24,17 +24,13 @@ is supposed to be used for testing and bug fixes only.
    See more examples of using "Font Awesome" within HTML at:
    http://fontawesome.io/whats-new/examples/
 
-2. Icon API (https://drupal.org/project/icon) integration:
-   This module provides easy to use interfaces that quickly allow you to inject
-   icons in various aspects of your Drupal site: blocks, menus, fields, filters.
-
 
 INSTALLATION
 ------------
 
 1. Using Drush (https://github.com/drush-ops/drush#readme)
 
-    $ drush pm-enable fontawesome
+    $ drush en fontawesome
 
     Upon enabling, this will also attempt to download and install the library
     in `/libraries/fontawesome`. If, for whatever reason, this process
@@ -56,7 +52,7 @@ INSTALLATION
          (http://fontawesome.io) and place inside
          "/libraries/fontawesome" directory. The CSS file should
          be /libraries/fontawesome/css/font-awesome.css
-         Direct link for downloading latest version (current is v4.5.0) is:
+         Direct link for downloading latest version (current is v4.7.0) is:
          https://github.com/FortAwesome/Font-Awesome/archive/master.zip
     b. Enable the module at Administer >> Site building >> Modules.
 
