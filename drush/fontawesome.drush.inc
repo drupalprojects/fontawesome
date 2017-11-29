@@ -42,24 +42,48 @@ function fontawesome_drush_lib_download($path = '') {
     // Just in case if it is site specific? e.g. sites/domain.com/libraries ?
     $path = DRUPAL_ROOT . '/libraries/fontawesome';
   }
+
   // Create the path if it does not exist yet. Added substr check for preventing
   // any wrong attempts or hacks !
   if (substr($path, -11) == 'fontawesome' && !is_dir($path)) {
     drush_mkdir($path);
   }
   if (is_dir($path . '/css')) {
-    drush_log(dt('Fontawesome already present at @path. No download required.', ['@path' => $path]), 'ok');
-  }
-  elseif (drush_op('chdir', $path) &&
-      $fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome.cdn') &&
-      drush_shell_exec('wget ' . $fontawesome_library['remote'] . '  -O fontawesome.zip') &&
-      drush_shell_exec('unzip fontawesome.zip') &&
-      drush_shell_exec('mv Font-Awesome-*/* .') &&
-      drush_shell_exec('rm -rf Font-Awesome-*')) {
-    drush_log(dt('The latest Fontawesome library has been downloaded to @path', ['@path' => $path]), 'success');
+    drush_log(dt('Font Awesome already present at @path. No download required.', ['@path' => $path]), 'ok');
   }
   else {
-    drush_log(dt('Drush was unable to download the Fontawesome library to @path', ['@path' => $path]), 'error');
+    // Change to the Font Awesome destination directory.
+    if (drush_op('chdir', $path)) {
+      // Load the Font Awesome defined library.
+      if ($fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome')) {
+        // Attempt to download the remote Font Awesome.
+        if (drush_shell_exec('wget ' . $fontawesome_library['remote'] . '  -O fontawesome.zip')) {
+          // Attempt to unzip Font Awesome to the library directory.
+          if (drush_shell_exec('unzip fontawesome.zip') && drush_shell_exec('mv font-awesome-' . $fontawesome_library['version'] . '/* .')) {
+            // Here we have a working Font Awesome installation.
+            drush_log(dt('The latest Font Awesome library has been downloaded to @path', ['@path' => $path]), 'success');
+            // Remove the downloaded files.
+            drush_shell_exec('rm -rf font-awesome-' . $fontawesome_library['version'] . ' fontawesome.zip');
+          }
+          else {
+            // Clear the directory.
+            drush_shell_exec('rm -rf ' . $path . '/*');
+            drush_log(dt('Drush was unable to properly unzip and place the Font Awesome library'), 'error');
+          }
+        }
+        else {
+          // Clear the directory.
+          drush_shell_exec('rm -rf ' . $path . '/*');
+          drush_log(dt('Drush was unable to download the Font Awesome library from @remote', ['@remote' => $fontawesome_library['remote']]), 'error');
+        }
+      }
+      else {
+        drush_log(dt('Drush was unable to load the Font Awesome library'), 'error');
+      }
+    }
+    else {
+      drush_log(dt('Drush was unable to find the Font Awesome directory at @path', ['@path' => $path]), 'error');
+    }
   }
 }
 
