@@ -22,6 +22,28 @@ function fontawesome_help($route_name, RouteMatchInterface $route_match) {
 }
 
 /**
+ * Implements hook_library_info_alter().
+ */
+function fontawesome_library_info_alter(&$libraries, $extension) {
+  // Modify the Font Awesome library to use external file if user chose.
+  if ($extension == 'fontawesome' && isset($libraries['fontawesome.cdn'])) {
+    // Check if we are using external file.
+    $configuration_settings = \Drupal::config('fontawesome.settings')->get();
+
+    // If the user has opted to load an external file, we load it instead.
+    if ($configuration_settings['fontawesome_use_cdn'] && !empty($configuration_settings['fontawesome_external_location'])) {
+      array_shift($libraries['fontawesome.cdn']['css']['theme']);
+      $libraries['fontawesome.cdn']['css']['theme'] = [
+        $configuration_settings['fontawesome_external_location'] => [
+          'type' => 'external',
+          'minified' => 1,
+        ],
+      ];
+    }
+  }
+}
+
+/**
  * Implements hook_ckeditor_css_alter().
  */
 function fontawesome_ckeditor_css_alter(&$css, $editor) {
