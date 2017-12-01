@@ -179,7 +179,7 @@ function fontawesome_extract_icons() {
   }
 
   // Parse the CSS content.
-  if (preg_match_all('@\.fa-(.*?):before@m', $content, $matches)) {
+  if (preg_match_all('@\.fa-([a-zA-Z0-9\-]*?):before[\s]?{[\s]*content:[\s]?"\\\\f[a-f0-9]+"@m', $content, $matches)) {
     $icons = $matches[1];
     asort($icons);
     return array_combine($icons, $icons);
