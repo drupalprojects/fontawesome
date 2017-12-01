@@ -40,7 +40,7 @@ function fontawesome_drush_lib_download($path = '') {
     // We have dependencies on libraries module so no need to check for that
     // TODO: any way to get path for libraries directory?
     // Just in case if it is site specific? e.g. sites/domain.com/libraries ?
-    $path = DRUPAL_ROOT . '/libraries/fontawesome';
+    $path = drush_get_context('DRUSH_DRUPAL_ROOT') . '/libraries/fontawesome';
   }
 
   // Create the path if it does not exist yet. Added substr check for preventing
