@@ -7,11 +7,13 @@ CONTENTS OF THIS FILE
  * Credits
 
 
-INTRODUCTION 8.x version
+INTRODUCTION 8.2.x version
 ------------
-Font Awesome (http://fontawesome.io) is the iconic font designed for use with
-Bootstrap (http://getbootstrap.com). 8.x branch is under heavy development and
-is supposed to be used for testing and bug fixes only.
+Font Awesome (http://fontawesome.com) is the web's most popular icon set and
+toolkit. This release of the Font Awesome Icons module supports Font Awesome
+versions higher than 5.0. For older versions of Font Awesome, you should
+download and install Font Awesome Icons 8.1.x. See the Font Awesome Icons
+page on Drupal.org for more information.
 
 "fontawesome" provides integration of "Font Awesome" with Drupal. Once enabled
 "Font Awesome" icon fonts could be used as:
@@ -19,10 +21,10 @@ is supposed to be used for testing and bug fixes only.
 1. Directly inside of any HTML (node/block/view/panel). Inside HTML you can
    place Font Awesome icons just about anywhere with an <i> tag.
 
-   Example for an info icon: <i class="fa fa-info-circle"></i>
+   Example for an info icon: <i class="fas fa-camera-retro"></i>
 
    See more examples of using "Font Awesome" within HTML at:
-   http://fontawesome.io/whats-new/examples/
+   https://fontawesome.com/how-to-use/svg-with-js
 
 
 INSTALLATION
@@ -49,11 +51,11 @@ INSTALLATION
        - run "drush fa-download" (recommended, it will download the right
          package and extract it at the right place for you.)
        - manual install: Download & extract "Font Awesome"
-         (http://fontawesome.io) and place inside
-         "/libraries/fontawesome" directory. The CSS file should
-         be /libraries/fontawesome/css/font-awesome.css
-         Direct link for downloading latest version (current is v4.7.0) is:
-         https://github.com/FortAwesome/Font-Awesome/archive/master.zip
+         (http://fontawesome.com) and place inside
+         "/libraries/fontawesome" directory. The JS file should
+         be at /libraries/fontawesome/svg-with-js/js/fontawesome-all.js
+         Direct link for downloading latest version (current is v5.0.1) is:
+         https://use.fontawesome.com/releases/v5.0.1/fontawesome-free-5.0.1.zip
     b. Enable the module at Administer >> Site building >> Modules.
 
 CREDITS
