@@ -158,8 +158,8 @@ function fontawesome_icon_bundle_configure(&$settings, &$form_state, &$complete_
         '%tag' => '<' . $bundle['settings']['tag'] . '>',
       ]),
       '#options' => array_combine(
-        ['i', 'span', 'div'],
-        ['i', 'span', 'div']
+        ['i', 'span'],
+        ['i', 'span']
       ),
       '#default_value' => $bundle['settings']['tag'],
     ];
@@ -178,8 +178,9 @@ function fontawesome_preprocess_icon_sprite(&$variables) {
       unset($variables['attributes']['class'][$key]);
     }
 
+    // TODO: need to add the correct class depending on icon type.
     // Add the necessary FA identifier class.
-    $variables['attributes']['class'][] = 'fa';
+    $variables['attributes']['class'][] = 'fas';
 
     // Prepend the icon with the FA prefix (which will be used as the class).
     $variables['icon'] = 'fa-' . $variables['icon'];
@@ -189,7 +190,7 @@ function fontawesome_preprocess_icon_sprite(&$variables) {
 /**
  * Implements hook_icon_bundles().
  *
- * @todo Extract icons from CSS or JSON file (currently not possible).
+ * TODO: this is waiting on an 8.x release of Icon API.
  */
 function fontawesome_icon_bundles() {
   $bundles['fontawesome'] = [
@@ -205,41 +206,40 @@ function fontawesome_icon_bundles() {
 }
 
 /**
- * Extracts all icons from the CSS file.
+ * Provides a list of all available Font Awesome icons from metadata.
  *
  * @return array
  *   Array containing icons.
  */
 function fontawesome_extract_icons() {
-  // If CDN is enabled, get CSS content from the CDN URL.
-  if (\Drupal::config('fontawesome.settings')->get('fontawesome_use_cdn')) {
-    $fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome.cdn');
-    $url = $fontawesome_library['css'][0]['data'];
+  $icons = [];
 
-    // The URL needs to have a schema to work with drupal_http_request.
-    if (strpos($url, '//') === 0) {
-      $url = 'http:' . $url;
+  // Attempt to load the icons from the local library's metadata if possible.
+  $metadataFile = drupal_realpath(DRUPAL_ROOT . '/libraries/fontawesome/advanced-options/metadata/icons.yml');
+  // If we can't load the local file, use the included module icons file.
+  if (!file_exists($metadataFile)) {
+    $metadataFile = drupal_get_path('module', 'fontawesome') . '/metadata/icons.yml';
+  }
+
+  // Parse the metadata file and use it to generate the icon list.
+  foreach (Yaml::parse(file_get_contents($metadataFile)) as $name => $icon) {
+    // Determine the icon type - brands behave differently.
+    $type = 'solid';
+    foreach ($icon['styles'] as $style) {
+      if ($style == 'brands') {
+        $type = 'brands';
+        break;
+      }
     }
-
-    $response = \Drupal::httpClient()->get($url, ['headers' => ['Accept' => 'text/plain']]);
-    $content = (string) $response->getBody();
-  }
-  // Otherwise get CSS content from the local library.
-  else {
-    $fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome');
-    $filepath = DRUPAL_ROOT . '/' . $fontawesome_library['css'][0]['data'];
-
-    $content = file_exists($filepath) ? file_get_contents($filepath) : '';
+    $icons[$name] = [
+      'name' => $name,
+      'type' => $type,
+      'label' => $icon['label'],
+      'styles' => $icon['styles'],
+    ];
   }
 
-  // Parse the CSS content.
-  if (preg_match_all('@\.fa-([a-zA-Z0-9\-]*?):before[\s]?{[\s]*content:[\s]?"\\\\f[a-f0-9]+"@m', $content, $matches)) {
-    $icons = $matches[1];
-    asort($icons);
-    return array_combine($icons, $icons);
-  }
-
-  return [];
+  return $icons;
 }
 
 /**
