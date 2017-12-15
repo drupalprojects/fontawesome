@@ -244,18 +244,47 @@ function fontawesome_extract_icons() {
 
 /**
  * Implements hook_editor_js_settings_alter().
+ *
+ * This function allows for the proper functionality of the icons inside the
+ * CKEditor when using SVG with JS as the Font Awesome display method. This
+ * function also provides for the use of empty tags inside the CKEditor. These
+ * tags are normally stripped, which makes the traditional method of using
+ * Font Awesome unworkable. Allowing those tags here lets users use the methods
+ * of including icons described in all of the Font Awesome guides and docs.
+ *
+ * See fontawesome_ckeditor_css_alter() for allowing the use of the icons
+ * inside CKEditor when using the Webfonts with CSS display method.
  */
 function fontawesome_editor_js_settings_alter(array &$settings) {
+  // Load the configuration settings.
+  $configuration_settings = \Drupal::config('fontawesome.settings');
 
-  $editors = Editor::loadMultiple();
-
-  /* @var Drupal\editor\Entity\Editor $editor */
-  foreach ($editors as $editor) {
-    // Add custom settings to editor to allow for empty tags.
+  // Loop over the editors and add the required custom settings.
+  foreach (Editor::loadMultiple() as $editor) {
+    // Add custom settings to perform our custom functionality.
     $editor_id = $editor->id();
-    $settings['editor']['formats'][$editor_id]['editorSettings']['customConfig'] = base_path() . drupal_get_path('module', 'fontawesome') . '/js/allowEmptyTags.config.js';
+    $settings['editor']['formats'][$editor_id]['editorSettings']['customConfig'] = base_path() . drupal_get_path('module', 'fontawesome') . '/js/custom.config.js';
 
-    // Attach the list of allowed empty tags.
+    // Attach a list of allowed empty tags (to adhere to Font Awesome).
     $settings['editor']['formats']['allowedEmptyTags'] = ['i', 'span'];
+
+    // Attach our JS libraries as needed for loading inside the editor.
+    if ($configuration_settings->get('method') == 'svg') {
+      // SVG mode requires loading javascript.
+      $fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome.svg');
+      if (!$configuration_settings->get('use_cdn')) {
+        $fontawesome_library['js'][0]['data'] = '/' . $fontawesome_library['js'][0]['data'];
+      }
+      $settings['editor']['formats']['fontawesomeLibraries']['primary'] = $fontawesome_library['js'][0]['data'];
+
+      // Load the shim file as well if needed.
+      if ($configuration_settings->get('use_shim')) {
+        $fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome.svg.shim');
+        if (!$configuration_settings->get('use_cdn')) {
+          $fontawesome_library['js'][0]['data'] = '/' . $fontawesome_library['js'][0]['data'];
+        }
+        $settings['editor']['formats']['fontawesomeLibraries']['shim'] = $fontawesome_library['js'][0]['data'];
+      }
+    }
   }
 }

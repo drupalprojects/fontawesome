@@ -10,6 +10,7 @@ use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\editor\Ajax\EditorDialogSave;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
 use Drupal\Core\Url;
+use Drupal\Core\Link;
 
 /**
  * Provides a Font Awesome icon dialog for text editors.
@@ -39,8 +40,8 @@ class EditorIconDialog extends FormBase {
     $form['information'] = [
       '#type' => 'container',
       '#attributes' => [],
-      '#children' => $this->t('For more information on icon selection, see <a href=":iconurl" target="_blank">:iconurl</a>', [
-        ':iconurl' => 'http://fontawesome.io/icons/',
+      '#children' => $this->t('For more information on icon selection, see @iconLink. If an icon below is displayed with a question mark, it is like a Font Awesome Pro icon, unavailable with the free version of Font Awesome.', [
+        '@iconLink' => Link::fromTextAndUrl($this->t('the Font Awesome icon list'), Url::fromUri('https://fontawesome.com/icons'))->toString(),
       ]),
     ];
 
@@ -56,7 +57,7 @@ class EditorIconDialog extends FormBase {
           'id' => 'fontawesome-icon-preview',
         ],
         '#children' => $this->t('<i class=":iconclass"></i> :iconclass', [
-          ':iconclass' => $this->buildClassString(['flag']),
+          ':iconclass' => $this->buildClassString('solid', ['flag']),
         ]),
       ],
     ];
@@ -66,6 +67,25 @@ class EditorIconDialog extends FormBase {
       '#type' => 'details',
       '#open' => FALSE,
       '#title' => $this->t('Additional Settings'),
+    ];
+    // Allow user to determine size.
+    $form['settings']['style'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Style'),
+      '#description' => $this->t('This changes the style of the icon. Please note that this is not available for all icons, and for some of the icons this is only available in the pro version. If the icon does not render properly in the preview above, the icon does not support that style. Notably, brands do not support any styles. See @iconLink for more information.', [
+        '@iconLink' => Link::fromTextAndUrl($this->t('the Font Awesome icon list'), Url::fromUri('https://fontawesome.com/icons'))->toString(),
+      ]),
+      '#options' => [
+        'solid' => $this->t('Solid'),
+        'regular' => $this->t('Regular'),
+        'light' => $this->t('Light'),
+      ],
+      '#default_value' => 'fas',
+      '#ajax' => [
+        'callback' => [$this, 'previewIcon'],
+        'wrapper' => 'fontawesome-icon-preview',
+        'method' => 'html',
+      ],
     ];
     // Allow user to determine size.
     $form['settings']['size'] = [
@@ -114,7 +134,7 @@ class EditorIconDialog extends FormBase {
       ],
     ];
     // Invert color.
-    $form['settings']['border'] = [
+    $form['settings']['invert'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Invert color?'),
       '#description' => $this->t('Inverts the color of the icon (black becomes white, etc.)'),
@@ -176,7 +196,7 @@ class EditorIconDialog extends FormBase {
     ];
 
     // Pull the icons.
-    $form['settings']['animation'] = [
+    $form['settings']['pull'] = [
       '#type' => 'select',
       '#title' => $this->t('Pull'),
       '#description' => $this->t('This setting will pull the icon (float) to one side or the other in relation to its nearby content'),
@@ -197,11 +217,11 @@ class EditorIconDialog extends FormBase {
     $form['icon'] = [
       '#type' => 'radios',
       '#title' => $this->t('Icon'),
-      '#description' => $this->t('For information on how to stack icons or use them in ordered lists, see <a href=":iconlink" target="_blank">:iconlink</a>', [
-        ':iconlink' => 'http://fontawesome.io/examples/',
+      '#description' => $this->t('For information on how to stack icons or use them in ordered lists, see @iconLink.', [
+        '@iconLink' => Link::fromTextAndUrl($this->t('the guide on how to use Font Awesome'), Url::fromUri('https://fontawesome.com/how-to-use/svg-with-js'))->toString(),
       ]),
       '#options' => [],
-      '#default_value' => 'flag',
+      '#default_value' => 'solid flag',
       '#ajax' => [
         'callback' => [$this, 'previewIcon'],
         'wrapper' => 'fontawesome-icon-preview',
@@ -209,20 +229,17 @@ class EditorIconDialog extends FormBase {
       ],
     ];
     // Add all icon options to the list.
-    foreach (fontawesome_extract_icons() as $iconName) {
-      $form['icon']['#options'][$iconName] = $this->t('<i class=":iconclass" title=":iconname"></i> :iconname', [
-        ':iconclass' => $this->buildClassString([$iconName, 'lg', 'fw']),
-        ':iconname' => $iconName,
+    foreach (fontawesome_extract_icons() as $icon) {
+      // Build the preview icon.
+      $iconClass = $this->buildClassString($icon['type'], [
+        $icon['name'],
+        'lg',
+        'fw',
       ]);
-    }
-    if (count($form['icon']['#options']) == 0) {
-      $form['icon'] = [
-        '#type' => 'container',
-        '#attributes' => '',
-        '#children' => $this->t('Error: invalid CSS found for Font Awesome. Please check the <a href=":status_report">Status Report</a> to verify that Font Awesome is properly installed.', [
-          ':status_report' => Url::fromRoute('system.status')->toString(),
-        ]),
-      ];
+      $form['icon']['#options'][$icon['type'] . ' ' . $icon['name']] = $this->t('<i class=":iconclass" title=":iconname"></i> :iconname', [
+        ':iconclass' => $iconClass,
+        ':iconname' => $icon['name'],
+      ]);
     }
 
     $form['actions'] = [
@@ -247,14 +264,26 @@ class EditorIconDialog extends FormBase {
    */
   public function previewIcon(array &$form, FormStateInterface $form_state) {
     $form_values = $form_state->getValues();
-    $icon_class = $this->buildClassString([$form_values['icon']] + $form_values['settings']);
+    // We need both the type and the name to render properly.
+    $iconInfo = explode(' ', $form_values['icon']);
+    $iconType = $iconInfo[0];
+    $iconName = $iconInfo[1];
+    // Determine the type if it is different from the default.
+    // Don't allow style changes for brands.
+    if ($iconType != 'brands') {
+      $iconType = $form_values['settings']['style'];
+    }
+    unset($form_values['settings']['style']);
+
+    // Build the icon class.
+    $iconClass = $this->buildClassString($iconType, [$iconName] + $form_values['settings']);
     return [
       '#type' => 'html_tag',
       '#tag' => 'i',
       '#attributes' => [
-        'class' => $icon_class,
+        'class' => $iconClass,
       ],
-      '#suffix' => $icon_class,
+      '#suffix' => $iconClass,
     ];
   }
 
@@ -274,9 +303,20 @@ class EditorIconDialog extends FormBase {
     }
     else {
       $form_values = $form_state->getValues();
+      // We need both the type and the name to render properly.
+      $iconInfo = explode(' ', $form_values['icon']);
+      $iconType = $iconInfo[0];
+      $iconName = $iconInfo[1];
+      // Determine the type if it is different from the default.
+      // Don't allow style changes for brands.
+      if ($iconType != 'brands') {
+        $iconType = $form_values['settings']['style'];
+      }
+      unset($form_values['settings']['style']);
+
       $icon_attributes = [
         'attributes' => [
-          'class' => $this->buildClassString([$form_values['icon']] + $form_values['settings']),
+          'class' => $this->buildClassString($iconType, [$iconName] + $form_values['settings']),
         ],
       ];
 
@@ -290,20 +330,42 @@ class EditorIconDialog extends FormBase {
   /**
    * Build Font Awesome class string from an array of attributes.
    *
+   * @param string $type
+   *   The icon type being displayed.
    * @param array $attributes
    *   The attributes being used for this Font Awesome icon.
    *
    * @return string
    *   The class string for rendering an icon.
    */
-  private function buildClassString(array $attributes) {
+  private function buildClassString($type, array $attributes) {
+    // We have to prefix our icons differently depending on type.
+    switch ($type) {
+      case 'brands':
+        $prefix = 'fab';
+        break;
+
+      case 'light':
+        $prefix = 'fal';
+        break;
+
+      case 'solid':
+        $prefix = 'fas';
+        break;
+
+      case 'regular':
+      default:
+        $prefix = 'far';
+        break;
+    }
+
     $attributes = array_filter($attributes);
     foreach ($attributes as &$attribute) {
       if (substr($attribute, 0, 3) != 'fa-') {
         $attribute = 'fa-' . $attribute;
       }
     }
-    return 'fa ' . implode(' ', $attributes);
+    return $prefix . ' ' . implode(' ', $attributes);
   }
 
 }
