@@ -112,7 +112,7 @@ function fontawesome_page_attachments(array &$page) {
 
   // Throw error if library file not found.
   if (!fontawesome_check_installed()) {
-    drupal_set_message(t('The Font Awesome library could not be found. Please verify Font Awesome is installed correctly or that the CDN has been activated. Please see the @adminPage and the Font Awesome module README file for more details.', [
+    drupal_set_message(t('The Font Awesome library could not be found. Please verify Font Awesome is installed correctly or that the CDN has been activated and properly configured. Please see the @adminPage and the Font Awesome module README file for more details.', [
       '@adminPage' => Link::FromTextAndUrl(t('admin page'), Url::fromRoute('fontawesome.admin_settings'))->toString(),
     ]), 'warning');
     return;
