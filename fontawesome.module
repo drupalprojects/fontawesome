@@ -82,20 +82,18 @@ function fontawesome_check_installed() {
   $configuration_settings = \Drupal::config('fontawesome.settings');
 
   // Throw error if library file not found.
-  if ($configuration_settings->get('use_cdn')) {
+  if ($configuration_settings->get('method') == 'webfonts') {
+    // Webfonts method.
+    $fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome.webfonts');
+    return file_exists(DRUPAL_ROOT . '/' . $fontawesome_library['css'][0]['data']);
+  }
+  elseif ($configuration_settings->get('use_cdn')) {
     return !empty($configuration_settings->get('external_svg_location'));
   }
   else {
-    if ($configuration_settings->get('method') == 'webfonts') {
-      // Webfonts method.
-      $fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome.webfonts');
-      return file_exists(DRUPAL_ROOT . '/' . $fontawesome_library['css'][0]['data']);
-    }
-    else {
-      // SVG method.
-      $fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome.svg');
-      return file_exists(DRUPAL_ROOT . '/' . $fontawesome_library['js'][0]['data']);
-    }
+    // SVG method.
+    $fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome.svg');
+    return file_exists(DRUPAL_ROOT . '/' . $fontawesome_library['js'][0]['data']);
   }
 }
 
