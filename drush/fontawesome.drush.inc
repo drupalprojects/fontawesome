@@ -55,15 +55,15 @@ function fontawesome_drush_lib_download($path = '') {
     // Change to the Font Awesome destination directory.
     if (drush_op('chdir', $path)) {
       // Load the Font Awesome defined library.
-      if ($fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome')) {
+      if ($fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome.svg')) {
         // Attempt to download the remote Font Awesome.
         if (drush_shell_exec('wget ' . $fontawesome_library['remote'] . '  -O fontawesome.zip')) {
           // Attempt to unzip Font Awesome to the library directory.
-          if (drush_shell_exec('unzip fontawesome.zip') && drush_shell_exec('mv font-awesome-' . $fontawesome_library['version'] . '/* .')) {
+          if (drush_shell_exec('unzip fontawesome.zip') && drush_shell_exec('mv fontawesome-free-' . $fontawesome_library['version'] . '/* .')) {
             // Here we have a working Font Awesome installation.
             drush_log(dt('The latest Font Awesome library has been downloaded to @path', ['@path' => $path]), 'success');
             // Remove the downloaded files.
-            drush_shell_exec('rm -rf font-awesome-' . $fontawesome_library['version'] . ' fontawesome.zip');
+            drush_shell_exec('rm -rf fontawesome-free-' . $fontawesome_library['version'] . ' fontawesome.zip');
           }
           else {
             // Clear the directory.
