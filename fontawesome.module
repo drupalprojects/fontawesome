@@ -6,7 +6,10 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
-use \Drupal\editor\Entity\Editor;
+use Drupal\editor\Entity\Editor;
+use Drupal\Core\Url;
+use Drupal\Core\Link;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Implements hook_help().
@@ -26,35 +29,74 @@ function fontawesome_help($route_name, RouteMatchInterface $route_match) {
  */
 function fontawesome_library_info_alter(&$libraries, $extension) {
   // Modify the Font Awesome library to use external file if user chose.
-  if ($extension == 'fontawesome' && isset($libraries['fontawesome.cdn'])) {
-    // Check if we are using external file.
-    $configuration_settings = \Drupal::config('fontawesome.settings')->get();
+  if ($extension == 'fontawesome' && isset($libraries['fontawesome.svg'])) {
+    // Load the configuration settings.
+    $configuration_settings = \Drupal::config('fontawesome.settings');
 
-    // If the user has opted to load an external file, we load it instead.
-    if ($configuration_settings['fontawesome_use_cdn'] && !empty($configuration_settings['fontawesome_external_location'])) {
-      array_shift($libraries['fontawesome.cdn']['css']['theme']);
-      $libraries['fontawesome.cdn']['css']['theme'] = [
-        $configuration_settings['fontawesome_external_location'] => [
-          'type' => 'external',
-          'minified' => 1,
-        ],
+    // Have to modify the library if the user is using a CDN.
+    if ($configuration_settings->get('use_cdn')) {
+      // Modify the library.
+      $librarySettings = array_shift($libraries['fontawesome.svg']['js']);
+      $libraries['fontawesome.svg']['js'] = [
+        $configuration_settings->get('external_svg_location') => $librarySettings,
       ];
+
+      // Modify the shim as well.
+      if ($configuration_settings->get('use_shim')) {
+        $librarySettings = array_shift($libraries['fontawesome.svg.shim']['js']);
+        $libraries['fontawesome.svg.shim']['js'] = [
+          $configuration_settings->get('external_shim_location') => $librarySettings,
+        ];
+      }
     }
   }
 }
 
 /**
  * Implements hook_ckeditor_css_alter().
+ *
+ * This function allows for the proper functionality of the icons inside the
+ * CKEditor when using Webfonts with CSS as the Font Awesome display method.
+ *
+ * See fontawesome_editor_js_settings_alter() for allowing the use of the icons
+ * inside CKEditor when using the SVG with JS display method.
  */
 function fontawesome_ckeditor_css_alter(&$css, $editor) {
-  // Attach CSS to CKEditor where appropriate.
-  if (\Drupal::config('fontawesome.settings')->get('fontawesome_use_cdn')) {
-    $fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome.cdn');
+  // Attach the main library if we're using the CSS webfonts method..
+  if (\Drupal::config('fontawesome.settings')->get('method') == 'webfonts') {
+    // Load the library.
+    $fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome.webfonts');
+    // Attach it's CSS.
+    $css[] = $fontawesome_library['css'][0]['data'];
+  }
+}
+
+/**
+ * Check to make sure that Font Awesome is installed.
+ *
+ * @return bool
+ *   Flag indicating if the library is properly installed.
+ */
+function fontawesome_check_installed() {
+  // Load the configuration settings.
+  $configuration_settings = \Drupal::config('fontawesome.settings');
+
+  // Throw error if library file not found.
+  if ($configuration_settings->get('use_cdn')) {
+    return !empty($configuration_settings->get('external_svg_location'));
   }
   else {
-    $fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome');
+    if ($configuration_settings->get('method') == 'webfonts') {
+      // Webfonts method.
+      $fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome.webfonts');
+      return file_exists(DRUPAL_ROOT . '/' . $fontawesome_library['css'][0]['data']);
+    }
+    else {
+      // SVG method.
+      $fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome.svg');
+      return file_exists(DRUPAL_ROOT . '/' . $fontawesome_library['js'][0]['data']);
+    }
   }
-  $css[] = $fontawesome_library['css'][0]['data'];
 }
 
 /**
