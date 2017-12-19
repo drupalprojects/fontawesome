@@ -101,7 +101,9 @@ class FontAwesomeIconFormatter extends FormatterBase implements ContainerFactory
       $iconTransforms = [];
       $powerTransforms = $iconSettings['power_transforms'];
       foreach ($powerTransforms as $transform) {
-        $iconTransforms[] = $transform['type'] . '-' . $transform['value'];
+        if (!empty($transform['type'])) {
+          $iconTransforms[] = $transform['type'] . '-' . $transform['value'];
+        }
       }
       unset($iconSettings['power_transforms']);
 
