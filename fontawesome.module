@@ -133,6 +133,75 @@ function fontawesome_page_attachments(array &$page) {
 }
 
 /**
+ * Helper function returns the prefix for an icon based on icon type.
+ *
+ * @param array $styles
+ *   An array of valid styles for the icon.
+ * @param string $default
+ *   The value to assign here if it's not a brand icon.
+ *
+ * @return string
+ *   A valid prefix for this icon.
+ */
+function fontawesome_determine_prefix($styles, $default = 'fas') {
+  // Determine the icon style - brands behave differently.
+  foreach ($styles as $style) {
+    if ($style == 'brands') {
+      return 'fab';
+    }
+  }
+  return $default;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function fontawesome_theme($existing, $type, $theme, $path) {
+  return [
+    'fontawesomeicons' => [
+      'variables' => [
+        'icons' => NULL,
+      ],
+    ],
+    'fontawesomeicon' => [
+      'variables' => [
+        'name' => NULL,
+        'style' => NULL,
+        'settings' => NULL,
+        'transforms' => NULL,
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function fontawesome_theme_suggestions_fontawesomeicon(array $variables) {
+  // Suggest a template with the icon name if it exists.
+  if (!empty($variables['name'])) {
+    $suggestions[] = $variables['theme_hook_original'] . '__' . $variables['name'];
+  }
+  return $suggestions;
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function fontawesome_theme_registry_alter(&$theme_registry) {
+  /*
+   * By default, Drupal 8 does not include theme suggestions from inside the
+   * module in which they were created, so we must add them manually here.
+   */
+  $path = drupal_get_path('module', 'fontawesome');
+  $fontawesome_templates = drupal_find_theme_templates($theme_registry, '.html.twig', $path);
+  foreach ($fontawesome_templates as &$fontawesome_template) {
+    $fontawesome_template['type'] = 'module';
+  }
+  $theme_registry += $fontawesome_templates;
+}
+
+/**
  * Implements hook_icon_providers().
  */
 function fontawesome_icon_providers() {
