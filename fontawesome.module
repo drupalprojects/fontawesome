@@ -273,6 +273,22 @@ function fontawesome_icon_bundles() {
 }
 
 /**
+ * Loads the Font Awesome metadata file
+ *
+ * @param string
+ *   The filepath of the metadata file.
+ */
+function fontawesome_get_metadata_filepath() {
+  // Attempt to load the icons from the local library's metadata if possible.
+  $metadataFile = drupal_realpath(DRUPAL_ROOT . '/libraries/fontawesome/advanced-options/metadata/icons.yml');
+  // If we can't load the local file, use the included module icons file.
+  if (!file_exists($metadataFile)) {
+    $metadataFile = drupal_get_path('module', 'fontawesome') . '/metadata/icons.yml';
+  }
+  return $metadataFile;
+}
+
+/**
  * Provides a list of all available Font Awesome icons from metadata.
  *
  * @return array
@@ -281,15 +297,8 @@ function fontawesome_icon_bundles() {
 function fontawesome_extract_icons() {
   $icons = [];
 
-  // Attempt to load the icons from the local library's metadata if possible.
-  $metadataFile = drupal_realpath(DRUPAL_ROOT . '/libraries/fontawesome/advanced-options/metadata/icons.yml');
-  // If we can't load the local file, use the included module icons file.
-  if (!file_exists($metadataFile)) {
-    $metadataFile = drupal_get_path('module', 'fontawesome') . '/metadata/icons.yml';
-  }
-
   // Parse the metadata file and use it to generate the icon list.
-  foreach (Yaml::parse(file_get_contents($metadataFile)) as $name => $icon) {
+  foreach (Yaml::parse(file_get_contents(fontawesome_get_metadata_filepath())) as $name => $icon) {
     // Determine the icon type - brands behave differently.
     $type = 'solid';
     foreach ($icon['styles'] as $style) {
@@ -307,6 +316,39 @@ function fontawesome_extract_icons() {
   }
 
   return $icons;
+}
+
+/**
+ * Extract metadata for a specific icon.
+ *
+ * @param string $findIcon
+ *   The icon for which we want metadata.
+ *
+ * @return array
+ *   Array containing icons.
+ */
+function fontawesome_extract_icon_metadata($findIcon) {
+  // Parse the metadata file and use it to generate the icon list.
+  foreach (Yaml::parse(file_get_contents(fontawesome_get_metadata_filepath())) as $name => $icon) {
+    if ($name == $findIcon) {
+      // Determine the icon type - brands behave differently.
+      $type = 'solid';
+      foreach ($icon['styles'] as $style) {
+        if ($style == 'brands') {
+          $type = 'brands';
+          break;
+        }
+      }
+      return [
+        'name' => $name,
+        'type' => $type,
+        'label' => $icon['label'],
+        'styles' => $icon['styles'],
+      ];
+    }
+  }
+
+  return FALSE;
 }
 
 /**
