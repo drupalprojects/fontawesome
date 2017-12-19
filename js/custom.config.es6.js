@@ -23,9 +23,6 @@
       const $editorInstance = CKEDITOR.instances[thisEditor.editor.name];
       // Point the script at our library.
       $script.src = library;
-      $script.onload = () => {
-        $editorInstance.window.$.FontAwesome.load();
-      };
 
       $editorInstance.document.getHead().$.appendChild($script);
     });
