@@ -22,7 +22,7 @@ use Drupal\Core\Config\ConfigFactory;
  */
 class FontAwesomeIconFormatter extends FormatterBase implements ContainerFactoryPluginInterface {
   /**
-   * Drupal LoggerFactory service container.
+   * Drupal configuration service container.
    *
    * @var Drupal\Core\Config\ConfigFactory
    */

@@ -10,6 +10,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Link;
+use Drupal\Core\Config\ConfigFactory;
 
 /**
  * Plugin implementation of the 'fontawesome_icon' widget.
@@ -24,12 +25,20 @@ use Drupal\Core\Link;
  * )
  */
 class FontAwesomeIconWidget extends WidgetBase implements ContainerFactoryPluginInterface {
+  /**
+   * Drupal configuration service container.
+   *
+   * @var Drupal\Core\Config\ConfigFactory
+   */
+  protected $configFactory;
 
   /**
    * {@inheritdoc}
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, ConfigFactory $config_factory) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
+
+    $this->configFactory = $config_factory;
   }
 
   /**
@@ -41,7 +50,8 @@ class FontAwesomeIconWidget extends WidgetBase implements ContainerFactoryPlugin
       $plugin_definition,
       $configuration['field_definition'],
       $configuration['settings'],
-      $configuration['third_party_settings']
+      $configuration['third_party_settings'],
+      $container->get('config.factory')
     );
   }
 
@@ -50,6 +60,9 @@ class FontAwesomeIconWidget extends WidgetBase implements ContainerFactoryPlugin
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $field_name = $this->fieldDefinition->getName();
+
+    // Load the configuration settings.
+    $configuration_settings = $this->configFactory->get('fontawesome.settings');
 
     $element['icon_name'] = [
       '#type' => 'textfield',
@@ -166,8 +179,10 @@ class FontAwesomeIconWidget extends WidgetBase implements ContainerFactoryPlugin
     $element['settings']['power_transforms'] = [
       '#type' => 'details',
       '#open' => FALSE,
+      // Disable power transforms for webfonts.
+      '#disabled' => $configuration_settings->get('method') == 'webfonts',
       '#title' => $this->t('Power Transforms'),
-      '#description' => $this->t('See @iconLink for additional information on Power Transforms. Note that these transforms only work with the SVG with JS version of Font Awesome. See the @adminLink to set your version of Font Awesome.', [
+      '#description' => $this->t('See @iconLink for additional information on Power Transforms. Note that these transforms only work with the SVG with JS version of Font Awesome and are disabled for Webfonts. See the @adminLink to set your version of Font Awesome.', [
         '@iconLink' => Link::fromTextAndUrl($this->t('the Font Awesome `How to use` guide'), Url::fromUri('https://fontawesome.com/how-to-use/svg-with-js'))->toString(),
         '@adminLink' => Link::FromTextAndUrl($this->t('admin page'), Url::fromRoute('fontawesome.admin_settings'))->toString(),
       ]),

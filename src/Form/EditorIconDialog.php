@@ -9,13 +9,37 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\editor\Ajax\EditorDialogSave;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Link;
+use Drupal\Core\Config\ConfigFactory;
 
 /**
  * Provides a Font Awesome icon dialog for text editors.
  */
 class EditorIconDialog extends FormBase {
+  /**
+   * Drupal configuration service container.
+   *
+   * @var Drupal\Core\Config\ConfigFactory
+   */
+  protected $configFactory;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(ConfigFactory $config_factory) {
+    $this->configFactory = $config_factory;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('config.factory')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -31,6 +55,9 @@ class EditorIconDialog extends FormBase {
    *   The text editor to which this dialog corresponds.
    */
   public function buildForm(array $form, FormStateInterface $form_state, Editor $editor = NULL) {
+    // Load the configuration settings.
+    $configuration_settings = $this->configFactory->get('fontawesome.settings');
+
     $form['#tree'] = TRUE;
     $form['#attached']['library'][] = 'editor/drupal.editor.dialog';
 
@@ -158,8 +185,9 @@ class EditorIconDialog extends FormBase {
     $form['settings']['power_transforms'] = [
       '#type' => 'details',
       '#open' => FALSE,
+      '#disabled' => $configuration_settings->get('method') == 'webfonts',
       '#title' => $this->t('Power Transforms'),
-      '#description' => $this->t('See @iconLink for additional information on Power Transforms. Note that these transforms only work with the SVG with JS version of Font Awesome. See the @adminLink to set your version of Font Awesome.', [
+      '#description' => $this->t('See @iconLink for additional information on Power Transforms. Note that these transforms only work with the SVG with JS version of Font Awesome and are disabled for Webfonts. See the @adminLink to set your version of Font Awesome.', [
         '@iconLink' => Link::fromTextAndUrl($this->t('the Font Awesome `How to use` guide'), Url::fromUri('https://fontawesome.com/how-to-use/svg-with-js'))->toString(),
         '@adminLink' => Link::FromTextAndUrl($this->t('admin page'), Url::fromRoute('fontawesome.admin_settings'))->toString(),
       ]),
