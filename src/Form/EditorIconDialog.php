@@ -131,7 +131,7 @@ class EditorIconDialog extends FormBase {
       '#type' => 'select',
       '#title' => $this->t('Animation'),
       '#description' => $this->t('Use spin to get any icon to rotate, and pulse to have it rotate with 8 steps. Works especially well with fa-spinner & everything in the @iconLink.', [
-        '@iconLink' => Link::fromTextAndUrl(t('spinner icons category'), Url::fromUri('https://fontawesome.com/icons?c=spinner-icons'))->toString(),
+        '@iconLink' => Link::fromTextAndUrl($this->t('spinner icons category'), Url::fromUri('https://fontawesome.com/icons?c=spinner-icons'))->toString(),
       ]),
       '#options' => [
         '' => $this->t('None'),
@@ -160,8 +160,8 @@ class EditorIconDialog extends FormBase {
       '#open' => FALSE,
       '#title' => $this->t('Power Transforms'),
       '#description' => $this->t('See @iconLink for additional information on Power Transforms. Note that these transforms only work with the SVG with JS version of Font Awesome. See the @adminLink to set your version of Font Awesome.', [
-        '@iconLink' => Link::fromTextAndUrl(t('the Font Awesome `How to use` guide'), Url::fromUri('https://fontawesome.com/how-to-use/svg-with-js'))->toString(),
-        '@adminLink' => Link::FromTextAndUrl(t('admin page'), Url::fromRoute('fontawesome.admin_settings'))->toString(),
+        '@iconLink' => Link::fromTextAndUrl($this->t('the Font Awesome `How to use` guide'), Url::fromUri('https://fontawesome.com/how-to-use/svg-with-js'))->toString(),
+        '@adminLink' => Link::FromTextAndUrl($this->t('admin page'), Url::fromRoute('fontawesome.admin_settings'))->toString(),
       ]),
     ];
     // Rotate the icon.
@@ -409,7 +409,7 @@ class EditorIconDialog extends FormBase {
       $icon_attributes = [
         'attributes' => [
           'class' => [
-            trim($item['style'] . ' fa-' . $item['icon_name'] . ' ' .implode(' ', $item['settings'])),
+            trim($item['style'] . ' fa-' . $item['icon_name'] . ' ' . implode(' ', $item['settings'])),
           ],
         ],
       ];

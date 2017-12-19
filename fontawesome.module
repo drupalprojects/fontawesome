@@ -143,7 +143,7 @@ function fontawesome_page_attachments(array &$page) {
  * @return string
  *   A valid prefix for this icon.
  */
-function fontawesome_determine_prefix($styles, $default = 'fas') {
+function fontawesome_determine_prefix(array $styles, $default = 'fas') {
   // Determine the icon style - brands behave differently.
   foreach ($styles as $style) {
     if ($style == 'brands') {
@@ -273,9 +273,9 @@ function fontawesome_icon_bundles() {
 }
 
 /**
- * Loads the Font Awesome metadata file
+ * Loads the Font Awesome metadata file.
  *
- * @param string
+ * @return string
  *   The filepath of the metadata file.
  */
 function fontawesome_get_metadata_filepath() {

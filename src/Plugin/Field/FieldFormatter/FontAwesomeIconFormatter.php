@@ -93,7 +93,7 @@ class FontAwesomeIconFormatter extends FormatterBase implements ContainerFactory
 
     // Loop over each icon and build data.
     $icons = [];
-    foreach ($items as $key => $item) {
+    foreach ($items as $item) {
       // Get the icon settings.
       $iconSettings = unserialize($item->get('settings')->getValue());
 
