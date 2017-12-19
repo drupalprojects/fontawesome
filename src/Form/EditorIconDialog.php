@@ -309,7 +309,7 @@ class EditorIconDialog extends FormBase {
 
     // Check the value of the power transform.
     $transformSettings = $form_state->getValues();
-    foreach (array_slice($element['#parents'], 0, 5) as $key) {
+    foreach (array_slice($element['#parents'], 0, 3) as $key) {
       $transformSettings = $transformSettings[$key];
     }
 
