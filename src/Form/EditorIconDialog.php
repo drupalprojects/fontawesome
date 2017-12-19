@@ -399,7 +399,9 @@ class EditorIconDialog extends FormBase {
       // Get power transforms.
       $item['power_transforms'] = [];
       foreach ($item['settings']['power_transforms'] as $transform) {
-        $item['power_transforms'][] = $transform['type'] . '-' . $transform['value'];
+        if (!empty($transform['type'])) {
+          $item['power_transforms'][] = $transform['type'] . '-' . $transform['value'];
+        }
       }
       unset($item['settings']['power_transforms']);
 
@@ -409,9 +411,12 @@ class EditorIconDialog extends FormBase {
           'class' => [
             trim($item['style'] . ' fa-' . $item['icon_name'] . ' ' .implode(' ', $item['settings'])),
           ],
-          'data-fa-transform' => [implode(' ', $item['power_transforms'])],
         ],
       ];
+      // If there are power transforms, add them.
+      if (count($item['power_transforms']) > 0) {
+        $icon_attributes['attributes']['data-fa-transform'] = [implode(' ', $item['power_transforms'])];
+      }
 
       $response->addCommand(new EditorDialogSave($icon_attributes));
       $response->addCommand(new CloseModalDialogCommand());
