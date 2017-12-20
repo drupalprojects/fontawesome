@@ -81,7 +81,7 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'details',
       '#open' => TRUE,
       '#title' => $this->t('External file configuration'),
-      '#description' => $this->t('These settings control the method by which the Font Awesome library is loaded. You can choose to use an external library by selecting a URL below, or you can use a local version of the file by leaving the box unchecked and downloading the library <a href=":remoteurl">:remoteurl</a> and installing locally at %installpath. See the README for more information.', [
+      '#description' => $this->t('These settings control the method by which the Font Awesome library is loaded. You can choose to use an external (full URL) or local (relative path) library by selecting a URL / path below, or you can use a local version of the file by leaving the box unchecked and downloading the library <a href=":remoteurl">:remoteurl</a> and installing locally at %installpath. See the README for more information.', [
         ':remoteurl' => $fontawesome_library['remote'],
         '%installpath' => '/libraries',
       ]),
@@ -93,8 +93,8 @@ class SettingsForm extends ConfigFormBase {
       ],
       'use_cdn' => [
         '#type' => 'checkbox',
-        '#title' => $this->t('Use external file (CDN)?'),
-        '#description' => $this->t('Checking this box will cause the Font Awesome library to be loaded externally rather than from the local library file.'),
+        '#title' => $this->t('Use external file (CDN) / local file?'),
+        '#description' => $this->t('Checking this box will cause the Font Awesome library to be loaded from the given source rather than from the local library file.'),
         '#default_value' => $fontawesome_config->get('use_cdn'),
       ],
       'external_svg_location' => [
@@ -135,10 +135,10 @@ class SettingsForm extends ConfigFormBase {
       ],
       'external_shim_location' => [
         '#type' => 'textfield',
-        '#title' => $this->t('External Library Location'),
+        '#title' => $this->t('External / local Library Location'),
         '#default_value' => $fontawesome_config->get('external_shim_location'),
         '#size' => 80,
-        '#description' => $this->t('Enter a source URL for the external Font Awesome v4 shim file you wish to use. This URL should point to the Font Awesome JS shim file. Leave blank to use the default Font Awesome CDN.'),
+        '#description' => $this->t('Enter a source URL for the external / local (relative path) Font Awesome v4 shim file you wish to use. This URL should point to the Font Awesome JS shim file. Leave blank to use the default Font Awesome CDN.'),
         '#states' => [
           'disabled' => [
             ':input[name="use_cdn"]' => ['checked' => FALSE],
