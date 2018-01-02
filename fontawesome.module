@@ -29,23 +29,35 @@ function fontawesome_help($route_name, RouteMatchInterface $route_match) {
  */
 function fontawesome_library_info_alter(&$libraries, $extension) {
   // Modify the Font Awesome library to use external file if user chose.
-  if ($extension == 'fontawesome' && isset($libraries['fontawesome.svg'])) {
+  if ($extension == 'fontawesome') {
     // Load the configuration settings.
     $configuration_settings = \Drupal::config('fontawesome.settings');
 
     // Have to modify the library if the user is using a CDN.
     if ($configuration_settings->get('use_cdn')) {
-      // Modify the library.
-      $librarySettings = array_shift($libraries['fontawesome.svg']['js']);
-      $libraries['fontawesome.svg']['js'] = [
-        $configuration_settings->get('external_svg_location') => $librarySettings,
-      ];
 
-      // Modify the shim as well.
-      if ($configuration_settings->get('use_shim')) {
-        $librarySettings = array_shift($libraries['fontawesome.svg.shim']['js']);
-        $libraries['fontawesome.svg.shim']['js'] = [
-          $configuration_settings->get('external_shim_location') => $librarySettings,
+      // Handle SVG method.
+      if (isset($libraries['fontawesome.svg'])) {
+        // Modify the library.
+        $librarySettings = array_shift($libraries['fontawesome.svg']['js']);
+        $libraries['fontawesome.svg']['js'] = [
+          $configuration_settings->get('external_svg_location') => $librarySettings,
+        ];
+
+        // Modify the shim as well.
+        if ($configuration_settings->get('use_shim')) {
+          $librarySettings = array_shift($libraries['fontawesome.svg.shim']['js']);
+          $libraries['fontawesome.svg.shim']['js'] = [
+            $configuration_settings->get('external_shim_location') => $librarySettings,
+          ];
+        }
+      }
+      // Handle webfonts method.
+      if (isset($libraries['fontawesome.webfonts'])) {
+        // Modify the library.
+        $librarySettings = array_shift($libraries['fontawesome.webfonts']['css']['theme']);
+        $libraries['fontawesome.webfonts']['css']['theme'] = [
+          $configuration_settings->get('external_svg_location') => $librarySettings,
         ];
       }
     }
@@ -82,13 +94,13 @@ function fontawesome_check_installed() {
   $configuration_settings = \Drupal::config('fontawesome.settings');
 
   // Throw error if library file not found.
-  if ($configuration_settings->get('method') == 'webfonts') {
+  if ($configuration_settings->get('use_cdn')) {
+    return !empty($configuration_settings->get('external_svg_location'));
+  }
+  elseif ($configuration_settings->get('method') == 'webfonts') {
     // Webfonts method.
     $fontawesome_library = \Drupal::service('library.discovery')->getLibraryByName('fontawesome', 'fontawesome.webfonts');
     return file_exists(DRUPAL_ROOT . '/' . $fontawesome_library['css'][0]['data']);
-  }
-  elseif ($configuration_settings->get('use_cdn')) {
-    return !empty($configuration_settings->get('external_svg_location'));
   }
   else {
     // SVG method.
