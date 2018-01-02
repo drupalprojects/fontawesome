@@ -189,7 +189,7 @@ class EditorIconDialog extends FormBase {
       '#title' => $this->t('Power Transforms'),
       '#description' => $this->t('See @iconLink for additional information on Power Transforms. Note that these transforms only work with the SVG with JS version of Font Awesome and are disabled for Webfonts. See the @adminLink to set your version of Font Awesome.', [
         '@iconLink' => Link::fromTextAndUrl($this->t('the Font Awesome `How to use` guide'), Url::fromUri('https://fontawesome.com/how-to-use/svg-with-js'))->toString(),
-        '@adminLink' => Link::FromTextAndUrl($this->t('admin page'), Url::fromRoute('fontawesome.admin_settings'))->toString(),
+        '@adminLink' => Link::createFromRoute($this->t('admin page'), 'fontawesome.admin_settings')->toString(),
       ]),
     ];
     // Rotate the icon.

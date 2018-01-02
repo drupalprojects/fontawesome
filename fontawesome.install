@@ -38,14 +38,14 @@ function fontawesome_requirements($phase) {
       $requirements['fontawesome']['severity'] = REQUIREMENT_OK;
       $requirements['fontawesome']['value'] = t('Font Awesome 5.0 library is installed. Using %version version. (@moreInfoLink)', [
         '%version' => $version,
-        '@moreInfoLink' => Link::fromTextAndUrl(t('more information'), Url::fromRoute('fontawesome.admin_settings'))->toString(),
+        '@moreInfoLink' => Link::createFromRoute(t('more information'), 'fontawesome.admin_settings')->toString(),
       ]);
     }
     else {
       $requirements['fontawesome']['severity'] = REQUIREMENT_ERROR;
       $requirements['fontawesome']['value'] = t('Not installed');
       $requirements['fontawesome']['description'] = t('The Font Awesome 5.0 library could not be found. Please verify Font Awesome 5.0 is installed correctly or that the CDN has been activated and properly configured. Please see the @adminPage and the Font Awesome module README file for more details.', [
-        '@adminPage' => Link::FromTextAndUrl(t('admin page'), Url::fromRoute('fontawesome.admin_settings'))->toString(),
+        '@adminPage' => Link::createFromRoute(t('admin page'),'fontawesome.admin_settings')->toString(),
       ]);
     }
   }
