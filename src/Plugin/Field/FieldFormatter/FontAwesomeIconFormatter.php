@@ -8,6 +8,9 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Config\ConfigFactory;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\Core\Link;
 
 /**
  * Implementation of Font Awesome icon formatter.
@@ -56,11 +59,51 @@ class FontAwesomeIconFormatter extends FormatterBase implements ContainerFactory
   /**
    * {@inheritdoc}
    */
-  public function settingsSummary() {
-    $summary = [
-      $this->t('Displays a Font Awesome icon.'),
+  public function settingsForm(array $form, FormStateInterface $form_state) {
+    // Load the configuration settings.
+    $configuration_settings = $this->configFactory->get('fontawesome.settings');
+
+    // Setting for optional download link.
+    $elements['layers'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Display multi-value fields as layers?'),
+      '#default_value' => $this->getSetting('layers'),
+      '#description' => $this->t('Layers are the new way to place icons and text visually on top of each other, replacing the Font Awesome classic icons stacks. With this new approach you can use more than 2 icons. Layers are awesome when you don’t want your page’s background to show through, or when you do want to use multiple colors, layer several icons, layer text, or layer counters onto an icon. Note that layers only work with the SVG version of Font Awesome. For more information, see @layersLink.', [
+        '@layersLink' => Link::fromTextAndUrl($this->t('the Font Awesome guide to layers'), Url::fromUri('https://fontawesome.com/how-to-use/svg-with-js#layering'))->toString(),
+      ]),
+      // Disable power transforms for webfonts.
+      '#disabled' => $configuration_settings->get('method') == 'webfonts',
     ];
+
+    return $elements;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsSummary() {
+    $settings = $this->getSettings();
+
+    $summary = [];
+
+    // Load the configuration settings.
+    $configuration_settings = $this->configFactory->get('fontawesome.settings');
+
+    // Show whether or not we are layering the icons.
+    $summary[] = $this->t('Display multi-value fields as layers: <strong>@layersSetting</strong>', [
+      '@layersSetting' => (($settings['layers'] && $configuration_settings->get('method') != 'webfonts') ? 'Yes' : 'No'),
+    ]);
+
     return $summary;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function defaultSettings() {
+    return [
+      'layers' => FALSE,
+    ] + parent::defaultSettings();
   }
 
   /**
@@ -98,7 +141,10 @@ class FontAwesomeIconFormatter extends FormatterBase implements ContainerFactory
       $iconSettings = unserialize($item->get('settings')->getValue());
 
       // Format mask.
-      $iconMask = $iconSettings['masking']['style'] . ' fa-' . $iconSettings['masking']['mask'];
+      $iconMask = '';
+      if (!empty($iconSettings['masking']['mask'])) {
+        $iconMask = $iconSettings['masking']['style'] . ' fa-' . $iconSettings['masking']['mask'];
+      }
       unset($iconSettings['masking']);
 
       // Format power transforms.
@@ -121,10 +167,14 @@ class FontAwesomeIconFormatter extends FormatterBase implements ContainerFactory
       ];
     }
 
+    // Get the icon settings.
+    $settings = $this->getSettings();
+
     return [
       [
         '#theme' => 'fontawesomeicons',
         '#icons' => $icons,
+        '#layers' => $settings['layers'],
       ],
       '#attached' => [
         'library' => $fontawesomeLibraries,

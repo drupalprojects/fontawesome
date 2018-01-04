@@ -173,6 +173,7 @@ function fontawesome_theme($existing, $type, $theme, $path) {
     'fontawesomeicons' => [
       'variables' => [
         'icons' => NULL,
+        'layers' => FALSE,
       ],
     ],
     'fontawesomeicon' => [
