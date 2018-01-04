@@ -181,6 +181,7 @@ function fontawesome_theme($existing, $type, $theme, $path) {
         'style' => NULL,
         'settings' => NULL,
         'transforms' => NULL,
+        'mask' => NULL,
       ],
     ],
   ];

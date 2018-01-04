@@ -87,7 +87,7 @@ class FontAwesomeIconWidget extends WidgetBase implements ContainerFactoryPlugin
       '#open' => FALSE,
       '#title' => $this->t('Additional Font Awesome Settings'),
     ];
-    // Allow user to determine size.
+    // Allow user to determine style.
     $element['settings']['style'] = [
       '#type' => 'select',
       '#title' => $this->t('Style'),
@@ -173,6 +173,45 @@ class FontAwesomeIconWidget extends WidgetBase implements ContainerFactoryPlugin
         'fa-pull-right' => $this->t('Right'),
       ],
       '#default_value' => isset($iconSettings['pull']) ? $iconSettings['pull'] : '',
+    ];
+
+    // Allow user to add masking.
+    $element['settings']['masking'] = [
+      '#type' => 'details',
+      '#open' => FALSE,
+      // Disable power transforms for webfonts.
+      '#disabled' => $configuration_settings->get('method') == 'webfonts',
+      '#title' => $this->t('Icon Mask'),
+      '#description' => $this->t('Masking is used to combine two icons to create one single-color shape. Use it with Power Transforms for some really awesome effects. Masks are great when you do want your background color to show through. See @maskingLink for more information. Note that masking only works with the SVG version of Font Awesome.', [
+        '@maskingLink' => Link::fromTextAndUrl($this->t('the Font Awesome guide to masking'), Url::fromUri('https://fontawesome.com/how-to-use/svg-with-js#masking'))->toString(),
+      ]),
+    ];
+    $element['settings']['masking']['mask'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Icon Name'),
+      '#size' => 50,
+      '#field_prefix' => 'fa-',
+      '#default_value' => isset($iconSettings['masking']['mask']) ? $iconSettings['masking']['mask'] : '',
+      '#description' => $this->t('Name of the Font Awesome Icon. See @iconsLink for valid icon names, or begin typing for an autocomplete list.', [
+        '@iconsLink' => Link::fromTextAndUrl($this->t('the Font Awesome icon list'), Url::fromUri('https://fontawesome.com/icons'))->toString(),
+      ]),
+      '#autocomplete_route_name' => 'fontawesome.autocomplete',
+      '#element_validate' => [
+        [static::class, 'validateIconName'],
+      ],
+    ];
+    $element['settings']['masking']['style'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Style'),
+      '#description' => $this->t('This changes the style of the masking icon. Please note that this is not available for all icons, and for some of the icons this is only available in the pro version. If the icon does not render properly in the preview above, the icon does not support that style. Notably, brands do not support any styles. See @iconLink for more information.', [
+        '@iconLink' => Link::fromTextAndUrl($this->t('the Font Awesome icon list'), Url::fromUri('https://fontawesome.com/icons'))->toString(),
+      ]),
+      '#options' => [
+        'fas' => $this->t('Solid'),
+        'far' => $this->t('Regular'),
+        'fal' => $this->t('Light'),
+      ],
+      '#default_value' => isset($iconSettings['masking']['style']) ? $iconSettings['masking']['style'] : '',
     ];
 
     // Build new power-transforms.
@@ -363,6 +402,10 @@ class FontAwesomeIconWidget extends WidgetBase implements ContainerFactoryPlugin
       // Remove the prefix if the user accidentally added it.
       if (substr($item['icon_name'], 0, 3) == 'fa-') {
         $item['icon_name'] = substr($item['icon_name'], 3);
+      }
+
+      if (!empty($item['settings']['masking']['style'])) {
+        $item['settings']['masking']['style'] = isset($metadata[$item['icon_name']]['styles']) ? fontawesome_determine_prefix($metadata[$item['icon_name']]['styles'], $item['settings']['masking']['style']) : 'fas';
       }
 
       // Massage rotate and flip values to make them format properly.

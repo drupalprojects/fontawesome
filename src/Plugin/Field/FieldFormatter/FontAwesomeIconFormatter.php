@@ -97,6 +97,10 @@ class FontAwesomeIconFormatter extends FormatterBase implements ContainerFactory
       // Get the icon settings.
       $iconSettings = unserialize($item->get('settings')->getValue());
 
+      // Format mask.
+      $iconMask = $iconSettings['masking']['style'] . ' fa-' . $iconSettings['masking']['mask'];
+      unset($iconSettings['masking']);
+
       // Format power transforms.
       $iconTransforms = [];
       $powerTransforms = $iconSettings['power_transforms'];
@@ -113,6 +117,7 @@ class FontAwesomeIconFormatter extends FormatterBase implements ContainerFactory
         '#style' => $item->get('style')->getValue(),
         '#settings' => implode(' ', $iconSettings),
         '#transforms' => implode(' ', $iconTransforms),
+        '#mask' => $iconMask,
       ];
     }
 
