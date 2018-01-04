@@ -230,6 +230,7 @@ class FontAwesomeIconWidget extends WidgetBase implements ContainerFactoryPlugin
     $element['settings']['power_transforms']['rotate']['value'] = [
       '#type' => 'number',
       '#title' => $this->t('Rotate'),
+      '#step' => 0.01,
       '#field_suffix' => '&deg;',
       '#default_value' => isset($iconSettings['power_transforms']['rotate']['value']) ? $iconSettings['power_transforms']['rotate']['value'] : '',
       '#description' => $this->t('Power Transform rotating effects icon angle without changing or moving the container. To rotate icons use any arbitrary value. Units are degrees with negative numbers allowed.'),
@@ -273,6 +274,7 @@ class FontAwesomeIconWidget extends WidgetBase implements ContainerFactoryPlugin
       '#type' => 'number',
       '#title' => $this->t('Scale Value'),
       '#min' => 0,
+      '#step' => 0.01,
       '#default_value' => isset($iconSettings['power_transforms']['scale']['value']) ? $iconSettings['power_transforms']['scale']['value'] : '',
       '#states' => [
         'disabled' => [
@@ -304,6 +306,7 @@ class FontAwesomeIconWidget extends WidgetBase implements ContainerFactoryPlugin
       '#type' => 'number',
       '#title' => $this->t('Position Value'),
       '#min' => 0,
+      '#step' => 0.01,
       '#default_value' => isset($iconSettings['power_transforms']['position_y']['value']) ? $iconSettings['power_transforms']['position_y']['value'] : '',
       '#states' => [
         'disabled' => [
@@ -334,6 +337,7 @@ class FontAwesomeIconWidget extends WidgetBase implements ContainerFactoryPlugin
       '#type' => 'number',
       '#title' => $this->t('Position Value'),
       '#min' => 0,
+      '#step' => 0.01,
       '#default_value' => isset($iconSettings['power_transforms']['position_x']['value']) ? $iconSettings['power_transforms']['position_x']['value'] : '',
       '#states' => [
         'disabled' => [
