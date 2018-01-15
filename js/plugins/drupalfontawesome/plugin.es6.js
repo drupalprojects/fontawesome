@@ -45,7 +45,7 @@
             range.insertNode(icon);
             range.selectNodeContents(icon);
             // Apply the new style to the icon text.
-            const style = new CKEDITOR.style({ element: 'i', attributes: returnValues.attributes });
+            const style = new CKEDITOR.style({ element: returnValues.tag, attributes: returnValues.attributes });
             style.type = CKEDITOR.STYLE_INLINE;
             style.applyToRange(range);
             range.select();

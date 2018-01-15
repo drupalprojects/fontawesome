@@ -41,7 +41,7 @@
             range.insertNode(icon);
             range.selectNodeContents(icon);
 
-            var style = new CKEDITOR.style({ element: 'i', attributes: returnValues.attributes });
+            var style = new CKEDITOR.style({ element: returnValues.tag, attributes: returnValues.attributes });
             style.type = CKEDITOR.STYLE_INLINE;
             style.applyToRange(range);
             range.select();

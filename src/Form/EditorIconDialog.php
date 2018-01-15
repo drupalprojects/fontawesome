@@ -446,6 +446,12 @@ class EditorIconDialog extends FormBase {
         $icon_attributes['attributes']['data-fa-transform'] = [implode(' ', $item['power_transforms'])];
       }
 
+      // Load the configuration settings.
+      $configuration_settings = $this->configFactory->get('fontawesome.settings');
+
+      // Set the user-selected tag type being used.
+      $icon_attributes['tag'] = empty($configuration_settings->get('tag')) ? 'i' : $configuration_settings->get('tag');
+
       $response->addCommand(new EditorDialogSave($icon_attributes));
       $response->addCommand(new CloseModalDialogCommand());
     }

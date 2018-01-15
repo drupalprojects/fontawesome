@@ -64,6 +64,17 @@ class SettingsForm extends ConfigFormBase {
     // Load the fontawesome libraries so we can use its definitions here.
     $fontawesome_library = $this->libraryDiscovery->getLibraryByName('fontawesome', 'fontawesome.svg');
 
+    $form['tag'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Font Awesome Tag'),
+      '#options' => [
+        'i' => $this->t('&lt;i&gt;'),
+        'span' => $this->t('&lt;span&gt;'),
+      ],
+      '#default_value' => empty($fontawesome_config->get('tag')) ? 'i' : $fontawesome_config->get('tag'),
+      '#description' => $this->t('Font Awesome works with any consistent HTML element. By default, Font Awesome uses the &lt;i&gt; tag for its icons. However, in some cases you may want to use a different tag for your Font Awesome icons, such as a &lt;span&gt; tag. Changing the value here will change the way the tags are inserted into your site. Manually created Font Awesome tags can use any HTML element you like. Note that changing this setting will require clearing the site cache.'),
+    ];
+
     $form['method'] = [
       '#type' => 'select',
       '#title' => $this->t('Font Awesome Method'),
@@ -203,6 +214,7 @@ class SettingsForm extends ConfigFormBase {
 
     // Save the updated settings.
     $this->config('fontawesome.settings')
+      ->set('tag', $values['tag'])
       ->set('method', $values['method'])
       ->set('use_cdn', $values['use_cdn'])
       ->set('external_svg_location', (string) $values['external_svg_location'])

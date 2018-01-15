@@ -159,6 +159,7 @@ class FontAwesomeIconFormatter extends FormatterBase implements ContainerFactory
 
       $icons[] = [
         '#theme' => 'fontawesomeicon',
+        '#tag' => $configurationSettings->get('tag'),
         '#name' => 'fa-' . $item->get('icon_name')->getValue(),
         '#style' => $item->get('style')->getValue(),
         '#settings' => implode(' ', $iconSettings),

@@ -4,6 +4,7 @@
  * Default implementation for Font Awesome Icon field.
  *
  * Available variables:
+ * - tag: the HTML tag being used to create the icon.
  * - icon: the name of the icon being used for templating.
  * - style: the Font Awesome style for the icon.
  * - settings: the additional Font Awesome style settings.
@@ -14,5 +15,5 @@
  */
 #}
 <div class="fontawesome-icon">
-  <i class="{{ style }} {{ name }} {{ settings }}" data-fa-transform="{{ transforms }}" data-fa-mask="{{ mask }}"></i>
+  <{{tag }} class="{{ style }} {{ name }} {{ settings }}" data-fa-transform="{{ transforms }}" data-fa-mask="{{ mask }}"></{{ tag }}>
 </div>
