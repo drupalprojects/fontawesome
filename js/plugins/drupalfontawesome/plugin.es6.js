@@ -15,20 +15,6 @@
     init(editor) {
       // Add the command for inserting Font Awesome icons.
       editor.addCommand('drupalfontawesome', {
-        allowedContent: {
-          i: {
-            attributes: {
-              '!class': true,
-            },
-            classes: {},
-          },
-        },
-        requiredContent: new CKEDITOR.style({
-          element: 'i',
-          attributes: {
-            class: '',
-          },
-        }),
         modes: { wysiwyg: 1 },
         canUndo: true,
         exec(execEditor) {

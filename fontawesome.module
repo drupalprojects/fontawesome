@@ -9,6 +9,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\editor\Entity\Editor;
 use Drupal\Core\Link;
 use Symfony\Component\Yaml\Yaml;
+use Drupal\Core\Entity\EntityInterface;
 
 /**
  * Implements hook_help().
@@ -363,6 +364,31 @@ function fontawesome_extract_icon_metadata($findIcon) {
   }
 
   return FALSE;
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function fontawesome_entity_presave(EntityInterface $entity) {
+  // If this entity had fields.
+  if (method_exists($entity, 'getFields')) {
+    // Loop over the fields.
+    foreach ($entity->getFields() as $fields) {
+      // If this is a text field (uses an editor).
+      if (in_array($fields->getFieldDefinition()->getType(), [
+        'text',
+        'text_long',
+        'text_with_summary',
+      ])) {
+        foreach ($fields as $field) {
+          // Find and replace SVG strings with original icon HTML.
+          $fieldValue = $field->getValue();
+          $fieldValue['value'] = preg_replace('%<svg .*?class="svg-inline--fa.*?<\/svg><!--\s?(.*?)\s?-->%', '$1', $fieldValue['value']);
+          $field->setValue($fieldValue);
+        }
+      }
+    }
+  }
 }
 
 /**

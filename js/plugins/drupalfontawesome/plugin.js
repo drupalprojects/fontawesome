@@ -14,20 +14,6 @@
 
     init: function init(editor) {
       editor.addCommand('drupalfontawesome', {
-        allowedContent: {
-          i: {
-            attributes: {
-              '!class': true
-            },
-            classes: {}
-          }
-        },
-        requiredContent: new CKEDITOR.style({
-          element: 'i',
-          attributes: {
-            class: ''
-          }
-        }),
         modes: { wysiwyg: 1 },
         canUndo: true,
         exec: function exec(execEditor) {
