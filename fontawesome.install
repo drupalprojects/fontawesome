@@ -5,7 +5,6 @@
  * Requirements page for Font Awesome.
  */
 
-use Drupal\Core\Url;
 use Drupal\Core\Link;
 
 /**
@@ -45,7 +44,7 @@ function fontawesome_requirements($phase) {
       $requirements['fontawesome']['severity'] = REQUIREMENT_ERROR;
       $requirements['fontawesome']['value'] = t('Not installed');
       $requirements['fontawesome']['description'] = t('The Font Awesome 5.0 library could not be found. Please verify Font Awesome 5.0 is installed correctly or that the CDN has been activated and properly configured. Please see the @adminPage and the Font Awesome module README file for more details.', [
-        '@adminPage' => Link::createFromRoute(t('admin page'),'fontawesome.admin_settings')->toString(),
+        '@adminPage' => Link::createFromRoute(t('admin page'), 'fontawesome.admin_settings')->toString(),
       ]);
     }
   }
