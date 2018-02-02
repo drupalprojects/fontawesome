@@ -23,13 +23,14 @@
             var selection = execEditor.getSelection();
             var range = selection.getRanges(1)[0];
 
-            var icon = new CKEDITOR.dom.text('', execEditor.document);
-            range.insertNode(icon);
-            range.selectNodeContents(icon);
+            var container = new CKEDITOR.dom.element('span', execEditor.document);
+            container.addClass('fontawesome-icon-inline');
+            var icon = new CKEDITOR.dom.element(returnValues.tag, execEditor.document);
+            icon.setAttributes(returnValues.attributes);
+            container.append(icon);
+            container.appendHtml('&nbsp;');
 
-            var style = new CKEDITOR.style({ element: returnValues.tag, attributes: returnValues.attributes });
-            style.type = CKEDITOR.STYLE_INLINE;
-            style.applyToRange(range);
+            range.insertNode(container);
             range.select();
 
             execEditor.fire('saveSnapshot');

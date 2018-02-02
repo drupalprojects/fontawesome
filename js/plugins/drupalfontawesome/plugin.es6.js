@@ -26,14 +26,19 @@
             const selection = execEditor.getSelection();
             const range = selection.getRanges(1)[0];
 
-            // Create the icon text element.
-            const icon = new CKEDITOR.dom.text('', execEditor.document);
-            range.insertNode(icon);
-            range.selectNodeContents(icon);
-            // Apply the new style to the icon text.
-            const style = new CKEDITOR.style({ element: returnValues.tag, attributes: returnValues.attributes });
-            style.type = CKEDITOR.STYLE_INLINE;
-            style.applyToRange(range);
+            // Create the container span for the icon.
+            var container = new CKEDITOR.dom.element('span', execEditor.document);
+            container.addClass('fontawesome-icon-inline');
+            // Create the icon element from the editor.
+            var icon = new CKEDITOR.dom.element(returnValues.tag, execEditor.document);
+            icon.setAttributes(returnValues.attributes);
+            // Add the icon to the container.
+            container.append(icon);
+            // CKEditor doesn't play well with SVG - this allows editing.
+            container.appendHtml('&nbsp;');
+
+            // Add the container to the range.
+            range.insertNode(container);
             range.select();
 
             // Save snapshot for undo support.
