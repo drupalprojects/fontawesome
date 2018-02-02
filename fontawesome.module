@@ -10,6 +10,7 @@ use Drupal\editor\Entity\Editor;
 use Drupal\Core\Link;
 use Symfony\Component\Yaml\Yaml;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\ContentEntityInterface;
 
 /**
  * Implements hook_help().
@@ -370,8 +371,7 @@ function fontawesome_extract_icon_metadata($findIcon) {
  * Implements hook_entity_presave().
  */
 function fontawesome_entity_presave(EntityInterface $entity) {
-  // If this entity had fields.
-  if (method_exists($entity, 'getFields')) {
+  if ($entity instanceof ContentEntityInterface) {
     // Loop over the fields.
     foreach ($entity->getFields() as $fields) {
       // If this is a text field (uses an editor).
