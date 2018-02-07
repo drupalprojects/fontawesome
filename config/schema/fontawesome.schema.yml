@@ -20,3 +20,6 @@ fontawesome.settings:
     external_shim_location:
       type: string
       label: 'Location of the external CDN for Font Awesome shim file'
+    allow_pseudo_elements:
+      type: boolean
+      label: 'Allow CSS pseudo elements with webfonts'

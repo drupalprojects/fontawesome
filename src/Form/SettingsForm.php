@@ -88,6 +88,20 @@ class SettingsForm extends ConfigFormBase {
       ]),
     ];
 
+    $form['allow_pseudo_elements'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Allow CSS pseudo-elements?'),
+      '#description' => $this->t('If you do not want to add icons directly in code, you can add them through CSS pseudo-elements. Font Awesome has leveraged the ::before pseudo-element to add icons to a page since the very beginning. For more information on how to use pseudo-elements, see the @pseudoElementsLink. Note that this feature is only available with the Webfonts version of Font Awesome.', [
+        '@pseudoElementsLink' => Link::fromTextAndUrl($this->t('Font Awesome guide to pseudo-elements'), Url::fromUri('https://fontawesome.com/how-to-use/web-fonts-with-css#pseudo-elements'))->toString(),
+      ]),
+      '#default_value' => $fontawesome_config->get('allow_pseudo_elements'),
+      '#states' => [
+        'disabled' => [
+          ':input[name="method"]' => ['value' => 'svg'],
+        ],
+      ],
+    ];
+
     $form['external'] = [
       '#type' => 'details',
       '#open' => TRUE,
@@ -220,6 +234,7 @@ class SettingsForm extends ConfigFormBase {
       ->set('external_svg_location', (string) $values['external_svg_location'])
       ->set('use_shim', $values['use_shim'])
       ->set('external_shim_location', (string) $values['external_shim_location'])
+      ->set('allow_pseudo_elements', $values['allow_pseudo_elements'])
       ->save();
 
     parent::submitForm($form, $form_state);
