@@ -2,6 +2,12 @@ fontawesome.settings:
   type: config_object
   label: 'Font Awesome settings'
   mapping:
+    tag:
+      type: string
+      label: 'Tag used for Font Awesome elements'
+    method:
+      type: string
+      label: 'Method used for delivering Font Awesome'
     use_cdn:
       type: boolean
       label: 'Use CDN to serve Font Awesome'
