@@ -1,8 +1,8 @@
 fontawesome:
-  remote: http://fontawesome.io/assets/font-awesome-4.7.0.zip
+  remote: https://fontawesome.com/v4.7.0/assets/font-awesome-4.7.0.zip
   license:
     name: MIT
-    url: http://fontawesome.io/license/
+    url: https://fontawesome.com/license
     gpl-compatible: true
   version: 4.7.0
   css:
