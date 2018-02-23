@@ -55,4 +55,47 @@
       }
     }
   });
+
+  $.each(drupalSettings.editor.fontawesome.allowedEmptyTags, function (_, tag) {
+    CKEDITOR.dtd.$removeEmpty[tag] = 0;
+  });
+
+  Drupal.FontAwesome = {};
+
+  Drupal.FontAwesome.tagsToSvg = function (drupalSettings, thisEditor) {
+    $.each(drupalSettings.editor.fontawesome.fontawesomeLibraries, function (_, library) {
+      var $script = document.createElement('script');
+      var $editorInstance = CKEDITOR.instances[thisEditor.editor.name];
+
+      $script.src = library;
+
+      $editorInstance.document.getHead().$.appendChild($script);
+    });
+  };
+
+  Drupal.FontAwesome.svgToTags = function (thisEditor) {
+    var htmlBody = thisEditor.editor.getData();
+
+    htmlBody = htmlBody.replace(/<svg .*?class="svg-inline--fa.*?<\/svg><!--\s?(.*?)\s?-->/g, '$1');
+
+    thisEditor.editor.setData(htmlBody);
+  };
+
+  CKEDITOR.on('instanceReady', function (ev) {
+    Drupal.FontAwesome.tagsToSvg(drupalSettings, ev);
+
+    ev.editor.on('mode', function () {
+      if (ev.editor.mode === 'source') {
+        Drupal.FontAwesome.svgToTags(ev);
+      } else if (ev.editor.mode === 'wysiwyg') {
+        Drupal.FontAwesome.tagsToSvg(drupalSettings, ev);
+      }
+    });
+
+    ev.editor.on('insertedIcon', function () {
+      ev.editor.setData(ev.editor.getData());
+
+      Drupal.FontAwesome.tagsToSvg(drupalSettings, ev);
+    });
+  });
 })(jQuery, Drupal, drupalSettings, CKEDITOR);
