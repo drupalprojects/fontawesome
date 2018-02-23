@@ -212,17 +212,17 @@ class SettingsForm extends ConfigFormBase {
 
     // Use default values if CDN is checked and the locations are blank.
     if ($values['use_cdn']) {
-      if (empty($values['external_svg_location']) || $values['external_svg_location'] == 'https://use.fontawesome.com/releases/v5.0.2/css/all.css' || $values['external_svg_location'] == 'https://use.fontawesome.com/releases/v5.0.2/js/all.js') {
+      if (empty($values['external_svg_location']) || $values['external_svg_location'] == 'https://use.fontawesome.com/releases/v5.0.6/css/all.css' || $values['external_svg_location'] == 'https://use.fontawesome.com/releases/v5.0.6/js/all.js') {
         // Choose the default depending on method.
         if ($values['method'] == 'webfonts') {
-          $values['external_svg_location'] = 'https://use.fontawesome.com/releases/v5.0.2/css/all.css';
+          $values['external_svg_location'] = 'https://use.fontawesome.com/releases/v5.0.6/css/all.css';
         }
         else {
-          $values['external_svg_location'] = 'https://use.fontawesome.com/releases/v5.0.2/js/all.js';
+          $values['external_svg_location'] = 'https://use.fontawesome.com/releases/v5.0.6/js/all.js';
         }
       }
       if ($values['use_shim'] && empty($values['external_shim_location'])) {
-        $values['external_shim_location'] = 'https://use.fontawesome.com/releases/v5.0.2/js/v4-shims.js';
+        $values['external_shim_location'] = 'https://use.fontawesome.com/releases/v5.0.6/js/v4-shims.js';
       }
     }
 
