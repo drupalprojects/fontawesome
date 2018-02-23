@@ -134,4 +134,8 @@
     }
   });
 
+  $.each(drupalSettings.editor.fontawesome.allowedEmptyTags, function (_, v) {
+      CKEDITOR.dtd.$removeEmpty[v] = 0;
+  });
+
 })(jQuery, Drupal, drupalSettings, CKEDITOR);

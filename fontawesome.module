@@ -192,16 +192,6 @@ function fontawesome_extract_icons() {
  * Implements hook_editor_js_settings_alter().
  */
 function fontawesome_editor_js_settings_alter(array &$settings) {
-
-  $editors = Editor::loadMultiple();
-
-  /* @var Drupal\editor\Entity\Editor $editor */
-  foreach ($editors as $editor) {
-    // Add custom settings to editor to allow for empty tags.
-    $editor_id = $editor->id();
-    $settings['editor']['formats'][$editor_id]['editorSettings']['customConfig'] = base_path() . drupal_get_path('module', 'fontawesome') . '/js/allowEmptyTags.config.js';
-
-    // Attach the list of allowed empty tags.
-    $settings['editor']['formats']['allowedEmptyTags'] = ['i', 'span'];
-  }
+  // Attach the list of allowed empty tags.
+  $settings['editor']['fontawesome']['allowedEmptyTags'] = ['i', 'span'];
 }
