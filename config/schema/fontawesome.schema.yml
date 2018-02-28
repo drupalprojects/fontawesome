@@ -5,3 +5,6 @@ fontawesome.settings:
     fontawesome_use_cdn:
       type: boolean
       label: 'Use CDN'
+    fontawesome_external_location:
+      type: string
+      label: 'External location'
