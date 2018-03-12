@@ -43,7 +43,10 @@ INSTALLATION
 
     and then using another drush command:-
 
+    (Drush 8)
     $ drush fa-download
+    (Drush 9)
+    $ drush fa:download
 
 2. Manually
 

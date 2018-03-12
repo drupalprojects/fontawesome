@@ -6,7 +6,6 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\editor\Entity\Editor;
 use Drupal\Core\Link;
 use Symfony\Component\Yaml\Yaml;
 use Drupal\Core\Entity\EntityInterface;
