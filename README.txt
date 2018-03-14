@@ -4,6 +4,7 @@ CONTENTS OF THIS FILE
 
  * Introduction
  * Installation
+ * Usage
  * Credits
 
 
@@ -60,6 +61,30 @@ INSTALLATION
          Direct link for downloading latest version (current is v5.0.1) is:
          https://use.fontawesome.com/releases/v5.0.1/fontawesome-free-5.0.1.zip
     b. Enable the module at Administer >> Site building >> Modules.
+
+
+USAGE
+_____
+Font Awesome can be used in many ways - you can manually insert Font Awesome
+tags wherever you see fit after enabling the module, but there are other ways
+as well.
+
+Font Awesome icon field - this module includes the option to add a Font Awesome
+icon field to any of your content types without the need for coding.
+
+Font Awesome CKEditor plugin - this module includes a CKEditor plugin which
+will allow you to insert Font Awesome icons into any CKEditor text field with
+the plugin enabled. It can be enabled under
+  Configuration -> Content authoring -> Text formats and editors
+From here, simply add the icon to your active toolbar (it looks like a flag).
+Please note that in order to use SVG with JS version of Font Awesome, you will
+need to either disable the "Correct faulty and chopped off HTML" filter, or you
+will have to add the required SVG tags to the exception list. A list of SVG
+tags can be found here:
+  https://www.w3.org/TR/SVG11/eltindex.html
+  or
+  https://developer.mozilla.org/en-US/docs/Web/SVG/Element
+
 
 CREDITS
 -------
