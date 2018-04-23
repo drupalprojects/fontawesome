@@ -136,7 +136,6 @@ function fontawesome_page_attachments(array &$page) {
   else {
     // Allow pseudo-elements in JS if selected.
     if ($configuration_settings->get('allow_pseudo_elements')) {
-      dpm('yes');
       $page['#attached']['library'][] = 'fontawesome/fontawesome.svg.pseudoElements';
     }
 
