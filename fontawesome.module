@@ -132,13 +132,14 @@ function fontawesome_page_attachments(array &$page) {
   if ($configuration_settings->get('method') == 'webfonts') {
     // Webfonts method.
     $page['#attached']['library'][] = 'fontawesome/fontawesome.webfonts';
-
-    // Allow pseudo-elements in CSS if selected.
-    if ($configuration_settings->get('allow_pseudo_elements')) {
-      $page['#attached']['library'][] = 'fontawesome/fontawesome.webfonts.pseudoElements';
-    }
   }
   else {
+    // Allow pseudo-elements in JS if selected.
+    if ($configuration_settings->get('allow_pseudo_elements')) {
+      dpm('yes');
+      $page['#attached']['library'][] = 'fontawesome/fontawesome.svg.pseudoElements';
+    }
+
     // SVG method.
     $page['#attached']['library'][] = 'fontawesome/fontawesome.svg';
 

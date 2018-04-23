@@ -27,7 +27,7 @@ fontawesome.webfonts:
     theme:
       /libraries/fontawesome/web-fonts-with-css/css/fontawesome-all.min.css: { minified: true }
 
-fontawesome.webfonts.pseudoElements:
+fontawesome.svg.pseudoElements:
   version: *fontawesome_version
   license: *fontawesome_webfonts_license
   js:
