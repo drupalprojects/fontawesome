@@ -18,8 +18,8 @@ function fontawesome_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
     case 'help.page.fontawesome':
       return '<p><i class="far fa-font-awesome fa-2x"></i> ' . t('<a href=":fontawesome_url">Font Awesome</a> is an iconic font and CSS toolkit. Font Awesome gives you scalable vector icons that can instantly be customized — size, color, drop shadow, and anything that can be done with the power of CSS. For more information on how to use Font Awesome, see the <a href=":fontawesome_examples_page">Font Awesome Examples page</a>.', [
-        ':fontawesome_url' => 'http://fontawesome.io',
-        ':fontawesome_examples_page' => 'http://fontawesome.io/examples/',
+        ':fontawesome_url' => 'https://fontawesome.com',
+        ':fontawesome_examples_page' => 'https://fontawesome.com/how-to-use/svg-with-js',
       ]) . '</p>';
   }
 }
