@@ -1,5 +1,5 @@
 name = Font Awesome
-description = Iconic font designed for use with Twitter Bootstrap.
+description = The most popular icon set and toolkit on the web.
 core = 7.x
 
 dependencies[] = libraries (>=7.x-2.0)
