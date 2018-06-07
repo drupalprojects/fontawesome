@@ -1,6 +1,6 @@
 name: 'Font Awesome'
 type: module
-description: 'Iconic font designed for use with Twitter Bootstrap.'
+description: 'The most popular icon set and toolkit on the web.'
 
 core: 8.x
 configure: fontawesome.admin_settings
