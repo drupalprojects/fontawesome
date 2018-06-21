@@ -1,6 +1,6 @@
 tag: 'i'
 method: 'svg'
 use_cdn: true
-external_svg_location: 'https://use.fontawesome.com/releases/v5.0.13/js/all.js'
+external_svg_location: 'https://use.fontawesome.com/releases/v5.1.0/js/all.js'
 use_shim: true
-external_shim_location: 'https://use.fontawesome.com/releases/v5.0.13/js/v4-shims.js'
+external_shim_location: 'https://use.fontawesome.com/releases/v5.1.0/js/v4-shims.js'
