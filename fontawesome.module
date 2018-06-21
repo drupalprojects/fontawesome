@@ -70,7 +70,7 @@ function fontawesome_libraries_info() {
   $libraries[FONTAWESOME_LIBRARY . '_svg']['machine name'] = FONTAWESOME_LIBRARY;
   $libraries[FONTAWESOME_LIBRARY . '_svg']['files'] = array(
     'js' => array(
-      'svg-with-js/js/fontawesome-all.js',
+      'js/all.js',
     ),
   );
 
@@ -79,7 +79,7 @@ function fontawesome_libraries_info() {
   $libraries[FONTAWESOME_LIBRARY . '_shim']['machine name'] = FONTAWESOME_LIBRARY;
   $libraries[FONTAWESOME_LIBRARY . '_shim']['files'] = array(
     'js' => array(
-      'svg-with-js/js/fa-v4-shims.js',
+      'js/v4-shims.js',
     ),
   );
 
@@ -88,7 +88,7 @@ function fontawesome_libraries_info() {
   $libraries[FONTAWESOME_LIBRARY . '_webfonts']['machine name'] = FONTAWESOME_LIBRARY;
   $libraries[FONTAWESOME_LIBRARY . '_webfonts']['files'] = array(
     'css' => array(
-      'web-fonts-with-css/css/fontawesome-all.css',
+      'css/all.css',
     ),
   );
 
