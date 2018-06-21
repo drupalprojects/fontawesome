@@ -2,16 +2,16 @@
 
 /**
  * @file
- * Drupal integration with Font Awesome 5.0.
+ * Drupal integration with Font Awesome 5.
  */
 
 define('FONTAWESOME_LIBRARY', 'fontawesome');
 define('FONTAWESOME_NAME', 'Font Awesome');
 define('FONTAWESOME_URL', 'https://fontawesome.com/');
-define('FONTAWESOME_CDN_CSS_URL', 'https://use.fontawesome.com/releases/v5.0.13/css/all.css');
-define('FONTAWESOME_CDN_SVG_URL', 'https://use.fontawesome.com/releases/v5.0.13/js/all.js');
-define('FONTAWESOME_CDN_SHIM_URL', 'https://use.fontawesome.com/releases/v5.0.13/js/v4-shims.js');
-define('FONTAWESOME_DOWNLOAD_URL', 'https://use.fontawesome.com/releases/v5.0.13/fontawesome-free-5.0.13.zip');
+define('FONTAWESOME_CDN_CSS_URL', 'https://use.fontawesome.com/releases/v5.1.0/css/all.css');
+define('FONTAWESOME_CDN_SVG_URL', 'https://use.fontawesome.com/releases/v5.1.0/js/all.js');
+define('FONTAWESOME_CDN_SHIM_URL', 'https://use.fontawesome.com/releases/v5.1.0/js/v4-shims.js');
+define('FONTAWESOME_DOWNLOAD_URL', 'https://use.fontawesome.com/releases/v5.1.0/fontawesome-free-5.1.0-web.zip');
 define('FONTAWESOME_PREFIX', 'fa');
 
 /**
