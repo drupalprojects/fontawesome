@@ -58,11 +58,7 @@ function fontawesome_libraries_info() {
       'svg' => FONTAWESOME_CDN_SVG_URL,
       'shim' => FONTAWESOME_CDN_SHIM_URL,
     ),
-    'version arguments' => array(
-      'file' => 'README.md',
-      'pattern' => '/# Font Awesome ([0-9\.]+)/',
-      'lines' => 1,
-    ),
+    'version callback' => '_fontawesome_version',
   );
 
   // SVG wtih JS library.
@@ -93,6 +89,13 @@ function fontawesome_libraries_info() {
   );
 
   return $libraries;
+}
+
+/**
+ * Callback to determine fontawesome version number.
+ */
+function _fontawesome_version() {
+  return '5.1.0';
 }
 
 /**
