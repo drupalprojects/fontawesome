@@ -6,13 +6,13 @@ fontawesome.svg:
     gpl-compatible: true
   version: &fontawesome_version "5.1.0"
   js:
-    /libraries/fontawesome/svg-with-js/js/fontawesome-all.min.js: { minified: true }
+    /libraries/fontawesome/js/all.js: { minified: true }
 
 fontawesome.svg.shim:
   version: *fontawesome_version
   license: *fontawesome_svg_license
   js:
-    /libraries/fontawesome/svg-with-js/js/fa-v4-shims.min.js: { minified: true }
+    /libraries/fontawesome/js/v4-shims.js: { minified: true }
   dependencies:
     - fontawesome/fontawesome.svg
 
@@ -25,7 +25,7 @@ fontawesome.webfonts:
   version: *fontawesome_version
   css:
     theme:
-      /libraries/fontawesome/web-fonts-with-css/css/fontawesome-all.min.css: { minified: true }
+      /libraries/fontawesome/css/all.js: { minified: true }
 
 fontawesome.svg.pseudoElements:
   version: *fontawesome_version
