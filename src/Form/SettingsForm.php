@@ -135,12 +135,6 @@ class SettingsForm extends ConfigFormBase {
       '#description' => $this->t('Version 5 of Font Awesome has some changes which require modifications to the way you declare many of your icons. The settings below are designed to ease that transition. See @upgradingLink for more information.', [
         '@upgradingLink' => Link::fromTextAndUrl($this->t('the Font Awesome guide to upgrading version 4 to version 5'), Url::fromUri('https://fontawesome.com/how-to-use/upgrading-from-4'))->toString(),
       ]),
-      // Webfonts with CSS does not support shims.
-      '#states' => [
-        'visible' => [
-          ':input[name="method"]' => ['value' => 'svg'],
-        ],
-      ],
       'use_shim' => [
         '#type' => 'checkbox',
         '#title' => $this->t('Use version 4 shim file?'),
@@ -162,21 +156,6 @@ class SettingsForm extends ConfigFormBase {
             ':input[name="use_cdn"]' => ['checked' => TRUE],
             ':input[name="use_shim"]' => ['checked' => TRUE],
           ],
-        ],
-      ],
-    ];
-
-    $form['no_shim'] = [
-      '#type' => 'details',
-      '#open' => TRUE,
-      '#title' => $this->t('Version 4 Backwards Compatibility'),
-      '#description' => $this->t('<strong>The Webfonts with CSS version of Font Awesome does not support backwards compatibility with Font Awesome 4.0.</strong> If you are using Webfonts, please make certain that the icons in your code base are updated to work with the 5.0 version of Font Awesome. See @upgradingLink and @webfontsLink for more information.', [
-        '@upgradingLink' => Link::fromTextAndUrl($this->t('the Font Awesome guide to upgrading version 4 to version 5'), Url::fromUri('https://fontawesome.com/how-to-use/upgrading-from-4'))->toString(),
-        '@webfontsLink' => Link::fromTextAndUrl($this->t('the Font Awesome Webfonts guide'), Url::fromUri('https://fontawesome.com/get-started/web-fonts-with-css'))->toString(),
-      ]),
-      '#states' => [
-        'visible' => [
-          ':input[name="method"]' => ['value' => 'webfonts'],
         ],
       ],
     ];
@@ -205,19 +184,22 @@ class SettingsForm extends ConfigFormBase {
     // Clear the library cache so we use the updated information.
     $this->libraryDiscovery->clearCachedDefinitions();
 
+    // Set external file defaults.
+    $default_location = 'https://use.fontawesome.com/releases/v5.1.0/';
+    $default_svg_location = $default_location . 'js/all.js';
+    $default_webfonts_location = $default_location . 'css/all.css';
+    $default_svg_shimfile_location = $default_location . 'js/v4-shims.js';
+    $default_webfonts_shimfile_location = $default_location . 'css/v4-shims.css';
+
     // Use default values if CDN is checked and the locations are blank.
     if ($values['use_cdn']) {
-      if (empty($values['external_svg_location']) || $values['external_svg_location'] == 'https://use.fontawesome.com/releases/v5.0.13/css/all.css' || $values['external_svg_location'] == 'https://use.fontawesome.com/releases/v5.0.13/js/all.js') {
+      if (empty($values['external_svg_location']) || $values['external_svg_location'] == $default_webfonts_location || $values['external_svg_location'] == $default_svg_location) {
         // Choose the default depending on method.
-        if ($values['method'] == 'webfonts') {
-          $values['external_svg_location'] = 'https://use.fontawesome.com/releases/v5.0.13/css/all.css';
-        }
-        else {
-          $values['external_svg_location'] = 'https://use.fontawesome.com/releases/v5.0.13/js/all.js';
-        }
+        $values['external_svg_location'] = ($values['method'] == 'webfonts') ? $default_webfonts_location : $default_svg_location;
       }
-      if ($values['use_shim'] && empty($values['external_shim_location'])) {
-        $values['external_shim_location'] = 'https://use.fontawesome.com/releases/v5.0.13/js/v4-shims.js';
+      if ($values['use_shim'] && (empty($values['external_shim_location']) || $values['external_shim_location'] == $default_webfonts_shimfile_location || $values['external_shim_location'] == $default_svg_shimfile_location)) {
+        // Choose the default depending on method.
+        $values['external_shim_location'] = ($values['method'] == 'webfonts') ? $default_webfonts_shimfile_location : $default_svg_shimfile_location;
       }
     }
 
