@@ -89,8 +89,8 @@ class FontawesomeCommands extends DrushCommands {
       $fs->remove($path . '/fontawesome.zip');
 
       // Move the file.
-      $fs->mirror($path . '/fontawesome-free-' . $fontawesome_library['version'], $path, NULL, ['override' => TRUE]);
-      $fs->remove($path . '/fontawesome-free-' . $fontawesome_library['version']);
+      $fs->mirror($path . '/fontawesome-free-' . $fontawesome_library['version'] . '-web', $path, NULL, ['override' => TRUE]);
+      $fs->remove($path . '/fontawesome-free-' . $fontawesome_library['version'] . '-web');
 
       // Success.
       $this->logger()->notice(dt('Fontawesome library has been successfully downloaded to @path.', [
