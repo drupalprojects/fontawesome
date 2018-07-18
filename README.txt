@@ -68,13 +68,13 @@ _____
 Font Awesome can be used in many ways - you can manually insert Font Awesome
 tags wherever you see fit after enabling the module, but there are other ways
 as well. See
-  https://fontawesome.com/how-to-use/svg-with-js
+  https://fontawesome.com/how-to-use/on-the-web/setup/getting-started?using=svg-with-js
 for information on basic usage.
 
 CSS Pseudo-elements - if you are using the older version of Font Awesome, CSS
 with webfonts, you can use CSS Pseudo-elements for inserting your icons rather
 than the default method. See
-  https://fontawesome.com/how-to-use/web-fonts-with-css#pseudo-elements
+  https://fontawesome.com/how-to-use/on-the-web/advanced/css-pseudo-elements
 for more information on how to add the icons through CSS.
 
 Font Awesome icon field - this module includes the option to add a Font Awesome
@@ -101,3 +101,4 @@ CREDITS
 * Mark Carver https://www.drupal.org/u/mark-carver
 * Brian Gilbert https://drupal.org/u/realityloop
 * Daniel Moberly https://drupal.org/u/danielmoberly
+* Truls S. Yggeseth https://drupal.org/u/truls1502
