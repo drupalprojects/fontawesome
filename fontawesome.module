@@ -10,6 +10,7 @@ use Drupal\Core\Link;
 use Symfony\Component\Yaml\Yaml;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\TypedData\Plugin\DataType\ItemList;
 
 /**
  * Implements hook_help().
@@ -394,17 +395,19 @@ function fontawesome_entity_presave(EntityInterface $entity) {
   if ($entity instanceof ContentEntityInterface) {
     // Loop over the fields.
     foreach ($entity->getFields() as $fields) {
-      // If this is a text field (uses an editor).
-      if (in_array($fields->getFieldDefinition()->getType(), [
-        'text',
-        'text_long',
-        'text_with_summary',
-      ])) {
-        foreach ($fields as $field) {
-          // Find and replace SVG strings with original icon HTML.
-          $fieldValue = $field->getValue();
-          $fieldValue['value'] = preg_replace('%<svg .*?class="svg-inline--fa.*?<\/svg><!--\s?(.*?)\s?-->%', '$1', $fieldValue['value']);
-          $field->setValue($fieldValue);
+      if ($fields instanceof ItemList) {
+        // If this is a text field (uses an editor).
+        if (in_array($fields->getFieldDefinition()->getType(), [
+          'text',
+          'text_long',
+          'text_with_summary',
+        ])) {
+          foreach ($fields as $field) {
+            // Find and replace SVG strings with original icon HTML.
+            $fieldValue = $field->getValue();
+            $fieldValue['value'] = preg_replace('%<svg .*?class="svg-inline--fa.*?<\/svg><!--\s?(.*?)\s?-->%', '$1', $fieldValue['value']);
+            $field->setValue($fieldValue);
+          }
         }
       }
     }
