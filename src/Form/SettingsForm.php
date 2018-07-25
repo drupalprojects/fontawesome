@@ -185,7 +185,7 @@ class SettingsForm extends ConfigFormBase {
     $this->libraryDiscovery->clearCachedDefinitions();
 
     // Set external file defaults.
-    $default_location = 'https://use.fontawesome.com/releases/v5.1.1/';
+    $default_location = 'https://use.fontawesome.com/releases/v5.2.0/';
     $default_svg_location = $default_location . 'js/all.js';
     $default_webfonts_location = $default_location . 'css/all.css';
     $default_svg_shimfile_location = $default_location . 'js/v4-shims.js';
