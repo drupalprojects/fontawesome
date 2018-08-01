@@ -285,12 +285,12 @@ function fontawesome_extract_icons() {
         break;
       }
     }
-    $icons[$name] = [
+    $icons[$name] = array(
       'name' => $name,
       'type' => $type,
       'label' => $icon->label,
       'styles' => $icon->styles,
-    ];
+    );
   }
 
   return $icons;
